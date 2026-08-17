@@ -1113,6 +1113,19 @@ terraform version
 ```
 All four returning a version number with no errors means that machine is ready for module 1 of any section. Run the same check on the other machine whenever you switch to it, don't assume both stay in sync automatically.
 
+## Practicing Safely
+The early modules (variables, output, control flow) only touch memory and the console, nothing on disk, nothing on the network. Run those checkpoints directly in your real terminal, there's nothing to protect against yet.
+
+That changes once a module starts reading or writing files (module 8), or touching real Azure resources (module 11 and the Bicep/Terraform sections). A few ways to practice those safely, easiest first:
+
+**A dedicated scratch folder.** For anything that reads or writes files, point every path in a practice script at one throwaway folder, like `~/ps-practice`, instead of anywhere that matters. Worst case you lose test files you didn't care about.
+
+**Windows Sandbox.** Built into Windows 10/11 Pro for free. Search "Windows Sandbox" in the Start menu (enable it under Windows Features if it's not already on). It opens a completely clean, disposable Windows desktop in seconds, closing the window throws away every change inside it, no cleanup needed. Best option if you're on Windows and haven't set anything else up yet.
+
+**A spare VM.** If you've got Windows Server or Linux VMs available, take a snapshot before practicing, revert it after. This is the best fit once you're running real Az cmdlets or actually touching Azure resources, not just local files.
+
+**-WhatIf for state-changing cmdlets.** Not a sandbox, but a lot of cmdlets, especially in the Az module, support `-WhatIf`, which shows exactly what would happen without doing it. Example: `Remove-AzResourceGroup -Name test -WhatIf`. Check with `Get-Help <cmdlet> -Full` first, not every cmdlet supports it. Good as a second layer even inside a sandbox or VM, not a replacement for one.
+
 ## Reference
 - https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows
 - https://learn.microsoft.com/en-us/powershell/scripting/install/install-rhel
