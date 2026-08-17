@@ -1,10 +1,33 @@
 # Data Sources
 
 ## Status
-Not started
+In progress
 
 ## Lesson
-(To be filled in when you start this module.)
+
+### What a data source is
+A data block pulls in information about something that already exists, without Terraform creating, owning, or managing it. The syntax mirrors a resource block closely, which is intentional:
+
+```hcl
+data "azurerm_resource_group" "existing" {
+  name = "rg-shared-networking"
+}
+```
+
+Reference it with data.<type>.<label>.<attribute>, for example data.azurerm_resource_group.existing.location.
+
+### Why this matters
+Common real-world use: looking up a resource group, virtual network, or image that some other team or process already created and owns, so you can reference its properties without Terraform trying to take ownership of that resource's lifecycle. If you used a resource block instead of a data block for something you don't actually own, Terraform would try to manage (and potentially destroy) something it never should have touched.
+
+### count and for_each work on data blocks too
+Just like resources, you can add count or for_each to a data block to look up multiple instances at once, each one addressed independently afterward.
+
+### A useful sanity check
+If a data source's lookup can't find anything matching what you specified, Terraform will refuse to plan and error out, that's actually a helpful behavior, it catches typos in resource group names or missing prerequisites before you get further into a broken plan.
 
 ## Key Terms
-See GLOSSARY.md at the repo root for terms used in this module.
+See GLOSSARY.md. New here: Data source (read-only, Terraform looks it up but never creates, modifies, or destroys it, unlike a managed resource).
+
+## Reference
+- https://developer.hashicorp.com/terraform/language/data-sources
+- https://developer.hashicorp.com/terraform/language/block/data

@@ -1,10 +1,49 @@
 # Writing and Calling Modules
 
 ## Status
-Not started
+In progress
 
 ## Lesson
-(To be filled in when you start this module.)
+
+### Root modules and child modules
+Every Terraform configuration is technically a module. The one you run terraform apply on directly is the root module. Anything it calls is a child module. This distinction matters once you start organizing real infrastructure.
+
+### Standard child module layout
+```
+modules/
+  storage-baseline/
+    main.tf        # resources
+    variables.tf   # input variables
+    outputs.tf     # exposed outputs
+    README.md
+```
+
+### Calling a module
+```hcl
+module "storage" {
+  source              = "./modules/storage-baseline"
+  resource_group_name = azurerm_resource_group.example.name
+  location             = azurerm_resource_group.example.location
+}
+```
+
+The module's own variables.tf defines exactly what it accepts as input, that's its interface. The calling (root) module supplies values for those variables directly as arguments inside the module block, it does not, and cannot, reach into the child module's internal resources directly.
+
+### A module's outputs are how data flows back out
+```hcl
+output "storage_account_name" {
+  value = module.storage.storage_account_name
+}
+```
+
+Reference a child module's output from the calling file as module.<local-name>.<output-name>.
+
+### Design guidance worth internalizing early
+Only expose the outputs a caller actually needs, don't leak internal implementation details just because they're technically available. And a module that's just a thin wrapper around a single resource type, with no real abstraction added, usually isn't worth the extra layer, if you can't name the module something other than the resource type it wraps, that's often a sign to just use the resource directly instead.
 
 ## Key Terms
-See GLOSSARY.md at the repo root for terms used in this module.
+See GLOSSARY.md. New here: Root module (the top-level configuration you run apply on), Child module (a reusable module called by another configuration), Interface (the specific inputs a module accepts and outputs it exposes, its contract with whatever calls it).
+
+## Reference
+- https://developer.hashicorp.com/terraform/language/modules/develop
+- https://developer.hashicorp.com/terraform/language/block/module
