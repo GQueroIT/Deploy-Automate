@@ -1,5 +1,7 @@
 # count and for_each
 
+By the end of this module, you'll be able to choose correctly between count and for_each, and explain why the choice actually matters, not just which syntax to use.
+
 ## Status
 In progress
 
@@ -56,9 +58,18 @@ HashiCorp's own guidance: use count for genuinely identical instances where inde
 
 - `toset()` — Converts a list into a set, required for for_each on a plain list of strings. Example: `toset(["a", "b", "c"])`
 
+## Troubleshooting
+
+- for_each throws an error about needing a map or set. A plain list doesn't work directly, wrap it in toset() first.
+- Removing a middle item from a count-based list causes an unexpected destroy/recreate on an item you didn't touch. That's the exact index-shift problem this lesson covers, for_each avoids it.
+
 ## Key Terms
 See GLOSSARY.md. New here: Meta-argument (a built-in argument, like count, for_each, or depends_on, that works on any resource type and controls Terraform's own behavior rather than the resource's actual configuration), Index vs key (a number based on position, versus a stable name-based identifier).
 
 ## Reference
 - https://developer.hashicorp.com/terraform/language/meta-arguments/count
 - https://support.hashicorp.com/hc/en-us/articles/31348158569363-Terraform-count-versus-for-each-meta-argument
+
+## See Also
+
+- [Bicep module 06, Conditionals and Loops](../../bicep-arm-json/06-conditionals-and-loops/lesson.md)

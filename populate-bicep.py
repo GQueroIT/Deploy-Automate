@@ -1271,14 +1271,145 @@ def commands_used_section(lesson_text: str) -> str:
     lines.append("")
     return "\n".join(lines) + "\n"
 
+
+# --- Per-module enhancements (outcomes, troubleshooting, expected results, cost/cleanup, cross-links) ---
+
+OUTCOMES = {
+"01-arm-json-anatomy": "By the end of this module, you'll be able to read and hand-write a complete ARM JSON template from scratch, and explain what each of the six sections actually does.",
+"02-bicep-basics": "By the end of this module, you'll be able to write the same resource in Bicep instead of raw JSON, and compile it to confirm it produces the same thing underneath.",
+"03-parameters-and-variables": "By the end of this module, you'll be able to write parameters with validation and secure values, and computed variables that keep you from repeating yourself.",
+"04-outputs": "By the end of this module, you'll be able to return values from a deployment, and know exactly when to mark one @secure().",
+"05-expressions-and-functions": "By the end of this module, you'll be able to generate a globally-unique, idempotent resource name instead of hardcoding one that will eventually collide.",
+"06-conditionals-and-loops": "By the end of this module, you'll be able to conditionally deploy a resource and deploy multiple copies of one from a single block.",
+"07-modules": "By the end of this module, you'll be able to break a Bicep file into a reusable module and call it with its own parameters.",
+"08-dependencies": "By the end of this module, you'll be able to express a real dependency between resources without ever writing dependsOn.",
+"09-array-loops-multiple-resources": "By the end of this module, you'll be able to deploy N nearly-identical resources from an array parameter using a single loop.",
+"10-deployment-scopes": "By the end of this module, you'll be able to write a subscription-scoped deployment that creates a resource group and deploys into it in one shot.",
+"11-what-if-and-validation": "By the end of this module, you'll be able to preview exactly what a deployment would change before you ever run it for real.",
+"12-decompile-arm-to-bicep": "By the end of this module, you'll be able to take an ARM JSON template you didn't write and convert it into Bicep you can actually read.",
+}
+
+TROUBLESHOOTING = {
+"01-arm-json-anatomy": [
+ "Deployment fails with a message about a missing required property on the storage account. sku and kind are both required and easy to forget.",
+ "You're not sure what apiVersion to use. Never guess it, look up the current one for that exact resource type on Microsoft's ARM reference, an outdated apiVersion can silently reject valid properties.",
+],
+"02-bicep-basics": [
+ "az bicep build fails with a parser error pointing at a line that looks fine. Check the line just above it, Bicep often reports the error one token after where the actual mistake is, like a missing comma or brace.",
+ "The compiled JSON doesn't look anything like your hand-written module 1 template. Normal for structure and metadata, what should match is the substance, the parameters, resources, and outputs sections.",
+],
+"03-parameters-and-variables": [
+ "@secure() on an int or bool parameter throws an error. It only works on string or object types.",
+ "@allowed() rejects a value you're sure is in the list. Check for a typo or case mismatch, the match is exact.",
+],
+"04-outputs": [
+ "Your secure output still shows up in deployment history. Confirm @secure() is actually on the output declaration itself, not just on the parameter that feeds it, they're marked separately.",
+ "output storageAccountId returns null or an error. Confirm you're referencing the resource's symbolic name correctly with .id, not typing a made-up property name.",
+],
+"05-expressions-and-functions": [
+ "Deployment fails with 'storage account name already exists' on a name you just made up. Storage account names are globally unique across all of Azure, not just your subscription, that's exactly why uniqueString() exists.",
+ "uniqueString(resourceGroup().id) seems to give a different result each time. It shouldn't, it's deterministic for the same resource group, check you're not mixing in something non-deterministic in the same expression.",
+],
+"06-conditionals-and-loops": [
+ "Your for loop deploys, but every instance has the same name and only one resource actually exists afterward. You referenced the original array parameter instead of the loop variable inside the block body.",
+ "Combining if and for throws a syntax error. The if goes directly after the equals sign, the for goes inside the square brackets that follow it, mixing up the order breaks it.",
+],
+"07-modules": [
+ "The module call fails saying a required parameter is missing. The module's own param() block defines what's required, check that file, not what you assume it needs.",
+ "You can't reference something inside the module from the calling file. You can only access what the module explicitly exposes as an output, nothing else is reachable from outside.",
+],
+"08-dependencies": [
+ "Deployment fails or deploys in the wrong order with zero dependsOn entries. Confirm you're using parent correctly on the child resource, and that it actually points at the resource's symbolic name.",
+ "You added dependsOn out of habit and it's not obviously wrong, but it's unnecessary. If a property reference would create the same dependency implicitly, the explicit one is just noise.",
+],
+"09-array-loops-multiple-resources": [
+ "Only one resource shows up after a loop deployment that should have created three. Same root cause as module 6, the name inside the loop body isn't actually using the loop variable.",
+ "range(0, 3) doesn't produce the count you expect. The second argument is a count, not an end value, range(0, 3) gives you three items: 0, 1, 2.",
+],
+"10-deployment-scopes": [
+ "az deployment sub create fails with a message about a missing --location. Subscription-scoped deployments need it explicitly, there's no resource group yet to imply a region.",
+ "The module deploys before the resource group exists. Confirm the module's scope: property points at the resource group's symbolic name you declared in the same file.",
+],
+"11-what-if-and-validation": [
+ "what-if shows a ~ (modify) on something you expected to be a fresh +. That usually means a resource with that name already exists from a previous run, what-if is telling you the truth.",
+ "The command errors immediately instead of showing a preview. Confirm you're using the exact same --template-file and --location flags the real deployment would need.",
+],
+"12-decompile-arm-to-bicep": [
+ "az bicep decompile errors out completely instead of producing warnings. Some ARM JSON patterns don't have a known Bicep equivalent yet, that's a real limitation, note what triggered it.",
+ "The decompiled file looks nothing like your hand-written Bicep from module 2. Expected, the decompiler generates its own naming and structure, that's exactly why this module has you clean it up afterward.",
+],
+}
+
+EXPECTED_RESULTS = {
+"01-arm-json-anatomy": "Your solution.json should be valid JSON (no trailing commas, matched braces) with exactly one parameter that has no default and one that does. Running it through any JSON validator should show zero errors.",
+"02-bicep-basics": "az bicep build --file solution.bicep should complete with no errors and produce a .json file. Opening that file, the resources array should contain one storage account matching what you wrote by hand in module 1.",
+"03-parameters-and-variables": "Attempting to deploy or compile with an environment value outside dev/test/prod should fail validation immediately. Your adminPassword parameter should never appear in plain text anywhere in compiled output.",
+"04-outputs": "Compiling should produce three outputs. The first two should have plain string values, the third, your @secure() one, should show as hidden or redacted rather than the actual value.",
+"05-expressions-and-functions": "Compiling twice in a row without changing anything should produce the exact same storage account name both times, that's the deterministic part working. The name should contain only lowercase letters and numbers.",
+"06-conditionals-and-loops": "With deployNsgs set to true, compiling should show three separate NSG resources in the output, each with a distinct name matching an entry in your array. With it false, zero NSGs should appear.",
+"07-modules": "Your main file should reference storage.bicep as a module and pass it real parameter values. The module's own file should have no knowledge of anything outside itself.",
+"08-dependencies": "Your finished file should have zero occurrences of the word dependsOn, and the compiled output should still show the file share correctly nested under the storage account.",
+"09-array-loops-multiple-resources": "Compiling with three names in your array parameter should produce three distinct NSG resources in the output, each matching its corresponding array entry, not three copies of the same name.",
+"10-deployment-scopes": "Your file should have targetScope = 'subscription' as its literal first line. Both the resource group resource and the module block should appear in the compiled output, with the module correctly scoped to the new resource group.",
+"11-what-if-and-validation": "Your what-if command should include the exact same --template-file and --location values your module 10 deployment would use. Every resource in the summary should be marked as a Create action, nothing else.",
+"12-decompile-arm-to-bicep": "Your cleaned-up decompiled file should compile successfully with az bicep build and produce JSON substantively equivalent to your module 1 and module 2 versions.",
+}
+
+COST_CLEANUP = {
+"02-bicep-basics": "If you deployed this for real rather than just compiling, storage accounts on Standard_LRS cost very little, but delete it when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"03-parameters-and-variables": "If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"04-outputs": "If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"05-expressions-and-functions": "If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"06-conditionals-and-loops": "NSGs themselves are free, but clean up the resource group when you're done experimenting: az group delete --name <your-rg> --yes --no-wait.",
+"07-modules": "If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"08-dependencies": "Storage accounts and file shares are both low-cost, but nothing here needs to stay running, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"09-array-loops-multiple-resources": "NSGs are free, but clean up the resource group when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"10-deployment-scopes": "This module actually creates a resource group. If you ran it for real, delete it when you're done: az group delete --name <your-rg> --yes --no-wait.",
+"11-what-if-and-validation": "what-if never creates or changes anything by itself, nothing to clean up from this module alone.",
+}
+
+SEE_ALSO = {
+"01-arm-json-anatomy": [
+    ("PowerShell module 09, JSON in PowerShell", "../../powershell/09-json-in-powershell/lesson.md"),
+    ("Terraform module 04, State", "../../terraform/04-state/lesson.md"),
+],
+"03-parameters-and-variables": [("Terraform module 03, Variables and Outputs", "../../terraform/03-variables-and-outputs/lesson.md")],
+"06-conditionals-and-loops": [("Terraform module 08, count and for_each", "../../terraform/08-count-and-for-each/lesson.md")],
+"07-modules": [("Terraform module 09, Writing and Calling Modules", "../../terraform/09-modules/lesson.md")],
+"08-dependencies": [("Terraform module 06, Resource Dependencies", "../../terraform/06-resource-dependencies/lesson.md")],
+"11-what-if-and-validation": [("Terraform module 02, Core Workflow", "../../terraform/02-core-workflow/lesson.md")],
+}
+
 def write_module(section_path: Path, slug: str, content: dict):
     module_path = section_path / slug
     module_path.mkdir(parents=True, exist_ok=True)
-    lesson_with_commands = content["lesson"].replace(
-        "## Key Terms", commands_used_section(content["lesson"]) + "## Key Terms", 1
-    )
-    (module_path / "lesson.md").write_text(make_interactive(lesson_with_commands))
-    (module_path / "problem.md").write_text(content["problem"])
+
+    lesson_text = content["lesson"]
+
+    if slug in OUTCOMES:
+        title_end = lesson_text.index("\n")
+        lesson_text = lesson_text[:title_end] + "\n\n" + OUTCOMES[slug] + lesson_text[title_end:]
+
+    insert_block = commands_used_section(content["lesson"])
+    if slug in TROUBLESHOOTING:
+        items = "\n".join(f"- {item}" for item in TROUBLESHOOTING[slug])
+        insert_block += "## Troubleshooting\n\n" + items + "\n\n"
+    lesson_text = lesson_text.replace("## Key Terms", insert_block + "## Key Terms", 1)
+
+    if slug in SEE_ALSO:
+        lines = ["## See Also", ""]
+        for label, rel_path in SEE_ALSO[slug]:
+            lines.append(f"- [{label}]({rel_path})")
+        lesson_text = lesson_text.rstrip("\n") + "\n\n" + "\n".join(lines) + "\n"
+
+    (module_path / "lesson.md").write_text(make_interactive(lesson_text))
+
+    problem_text = content["problem"]
+    if slug in EXPECTED_RESULTS:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Expected Result\n" + EXPECTED_RESULTS[slug] + "\n"
+    if slug in COST_CLEANUP:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Cost & Cleanup\n" + COST_CLEANUP[slug] + "\n"
+    (module_path / "problem.md").write_text(problem_text)
 
 def build():
     base = Path(REPO_NAME)

@@ -13,3 +13,9 @@ You've got the raw ARM JSON storage account template from module 1. Now rewrite 
 - Hint 1: resourceGroup().location is a common default for a location parameter, it pulls the location from the resource group you're deploying into rather than forcing you to hardcode a region.
 - Hint 2: The symbolic name you choose (storageAccount, stg, whatever) has zero effect on the deployed resource's actual name, don't confuse the two.
 - Hint 3: If az bicep build errors, read the specific line number and property it's complaining about, Bicep's compiler errors are usually precise about what's missing or malformed.
+
+## Expected Result
+az bicep build --file solution.bicep should complete with no errors and produce a .json file. Opening that file, the resources array should contain one storage account matching what you wrote by hand in module 1.
+
+## Cost & Cleanup
+If you deployed this for real rather than just compiling, storage accounts on Standard_LRS cost very little, but delete it when you're done: az group delete --name <your-rg> --yes --no-wait.

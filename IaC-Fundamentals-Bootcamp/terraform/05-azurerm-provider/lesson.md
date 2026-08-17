@@ -1,5 +1,7 @@
 # The azurerm Provider
 
+By the end of this module, you'll be able to authenticate to Azure and declare your first real azurerm resource.
+
 ## Status
 In progress
 
@@ -24,9 +26,18 @@ Covered briefly in module 1: recent versions of the azurerm provider require an 
 - `az login` — Signs in to Azure from the CLI. Example: `az login`
 - `terraform init` — Prepares the working directory and downloads required providers. Example: `terraform init`
 
+## Troubleshooting
+
+- terraform plan fails with an authentication error. Run az login again, CLI sessions expire, and azurerm depends on that session being valid.
+- Resources plan against the wrong subscription. Check az account show and az account set --subscription if you have access to more than one.
+
 ## Key Terms
 See GLOSSARY.md. New here: Authentication method (how you prove your identity to a platform before it lets you manage resources on it).
 
 ## Reference
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 - https://developer.hashicorp.com/terraform/tutorials/configuration-language/configure-providers
+
+## See Also
+
+- [PowerShell module 11, Az PowerShell Module Basics](../../powershell/11-az-powershell-basics/lesson.md)

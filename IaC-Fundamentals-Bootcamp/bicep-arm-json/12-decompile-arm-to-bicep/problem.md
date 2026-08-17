@@ -14,3 +14,6 @@ You want to close the loop on this entire section by converting your own hand-wr
 - Hint 1: Expect the decompiler to generate its own symbolic names for resources, often less readable than what you'd choose by hand, that's normal, rename them to match your own convention.
 - Hint 2: Watch for warning comments the decompiler inserts directly into the output, these flag spots it wasn't fully confident about, read every one of them rather than deleting them without looking.
 - Hint 3: If az bicep decompile errors out entirely instead of producing warnings, it usually means something in the source JSON doesn't have a known Bicep equivalent yet, note what triggered it rather than assuming you did something wrong.
+
+## Expected Result
+Your cleaned-up decompiled file should compile successfully with az bicep build and produce JSON substantively equivalent to your module 1 and module 2 versions.

@@ -15,3 +15,9 @@ In solution.bicep:
 - Hint 1: @allowed takes a literal array as its argument, written directly in the decorator, ['dev', 'test', 'prod'].
 - Hint 2: @secure() only works on parameters typed string or object, if you try it on an int or bool parameter it won't be valid.
 - Hint 3: For the ternary, environment == 'prod' ? 'prod-app' : 'nonprod-app' is the basic shape, you can nest more conditions if you want three distinct prefixes instead of two.
+
+## Expected Result
+Attempting to deploy or compile with an environment value outside dev/test/prod should fail validation immediately. Your adminPassword parameter should never appear in plain text anywhere in compiled output.
+
+## Cost & Cleanup
+If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.

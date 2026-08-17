@@ -17,3 +17,6 @@ In solution.ps1, write a function called Get-DiskSpaceStatus that:
 - Hint 1: Get-PSDrive -Name $DriveLetter returns an object with .Used and .Free properties, in bytes, you'll need both to calculate a percentage.
 - Hint 2: You don't need the word return, just leave the [PSCustomObject]@{ } as the last line of the function and it becomes the output automatically.
 - Hint 3: Test that scope is really working, try referencing a variable you declared inside the function from outside it after calling it, it should be empty or throw an error, confirming it never left the function.
+
+## Expected Result
+Calling Get-DiskSpaceStatus should return an object with DriveLetter, PercentUsed, and IsOverThreshold properties you can access with dot notation. Calling it twice with different parameters should give you two different results, not the same one twice.

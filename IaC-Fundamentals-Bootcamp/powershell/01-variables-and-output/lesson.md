@@ -1,5 +1,7 @@
 # Variables, Data Types, and Output
 
+By the end of this module, you'll be able to store values in variables, build a message from them with string interpolation, and know exactly when to use Write-Host versus Write-Output.
+
 ## Status
 In progress
 
@@ -72,6 +74,11 @@ Rule of thumb: if the message is for the person sitting at the keyboard right no
 - `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
 - `Write-Output` — Sends a value into the pipeline so it can be captured, piped, or returned. Example: `Write-Output $value`
 - `.ToLower()` — String method, converts a string to all lowercase. Example: `"TEXT".ToLower()`
+
+## Troubleshooting
+
+- Nothing prints when you use Write-Host inside a function and try to capture the result. That's expected, Write-Host never goes into the pipeline, switch to Write-Output if you need the value usable elsewhere.
+- 'Hello, $firstName' prints the literal text instead of the value. You're inside single quotes, only double quotes interpolate variables.
 
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: Variable, Cmdlet, Pipeline, Object, Parameter.

@@ -1,5 +1,7 @@
 # Bicep Basics: JSON to Bicep
 
+By the end of this module, you'll be able to write the same resource in Bicep instead of raw JSON, and compile it to confirm it produces the same thing underneath.
+
 ## Status
 In progress
 
@@ -52,6 +54,11 @@ This produces a .json file. Comparing that output against the ARM JSON you hand-
 
 - `az bicep build` — Compiles a .bicep file into the ARM JSON that actually gets deployed. Example: `az bicep build --file main.bicep`
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+
+## Troubleshooting
+
+- az bicep build fails with a parser error pointing at a line that looks fine. Check the line just above it, Bicep often reports the error one token after where the actual mistake is, like a missing comma or brace.
+- The compiled JSON doesn't look anything like your hand-written module 1 template. Normal for structure and metadata, what should match is the substance, the parameters, resources, and outputs sections.
 
 ## Key Terms
 See GLOSSARY.md. New here: Symbolic name (an internal reference name for a resource inside a Bicep file, not its actual Azure name), Transpile/Compile (converting Bicep source into the ARM JSON that actually gets deployed).

@@ -1,5 +1,7 @@
 # Az PowerShell Module Basics
 
+By the end of this module, you'll be able to connect to Azure from PowerShell, confirm which subscription you're pointed at, and pull back a clean list of what's actually there.
+
 ## Status
 In progress
 
@@ -79,9 +81,18 @@ Format-Table doesn't change the underlying objects, it only changes how they're 
 - `Get-AzResourceGroup` — Lists resource groups in the current subscription. Example: `Get-AzResourceGroup`
 - `Format-Table` — Displays objects as a table, showing only the properties you choose. Example: `... | Format-Table -Property Name, Location`
 
+## Troubleshooting
+
+- Get-AzResourceGroup returns 'Run Connect-AzAccount to login'. The session isn't authenticated yet, or it expired, reconnect.
+- Commands run successfully but against the wrong subscription. Always check Get-AzContext before running anything, especially if your account has access to more than one subscription.
+
 ## Key Terms
 See GLOSSARY.md. New here: Authentication (proving who you are to Azure before it lets you do anything), Context (which subscription/tenant your current session is currently pointed at).
 
 ## Reference
 - https://learn.microsoft.com/en-us/powershell/azure/install-azps-windows
 - https://learn.microsoft.com/en-us/powershell/module/az.accounts/connect-azaccount
+
+## See Also
+
+- [Terraform module 05, The azurerm Provider](../../terraform/05-azurerm-provider/lesson.md)

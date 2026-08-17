@@ -1,5 +1,7 @@
 # Array Loops for Multiple Resources
 
+By the end of this module, you'll be able to deploy N nearly-identical resources from an array parameter using a single loop.
+
 ## Status
 In progress
 
@@ -46,6 +48,11 @@ This is the single most common mistake with loops: forgetting that name: has to 
 
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
 - `range()` — Bicep function, generates an array of sequential integers for index-based loops. Example: `range(0, 3)`
+
+## Troubleshooting
+
+- Only one resource shows up after a loop deployment that should have created three. Same root cause as module 6, the name inside the loop body isn't actually using the loop variable.
+- range(0, 3) doesn't produce the count you expect. The second argument is a count, not an end value, range(0, 3) gives you three items: 0, 1, 2.
 
 ## Key Terms
 See GLOSSARY.md. Nothing new this module, this is reinforcement of Loop and Iteration from module 6, specifically applied to the resource-scaling use case.

@@ -1,5 +1,7 @@
 # Decompiling ARM to Bicep
 
+By the end of this module, you'll be able to take an ARM JSON template you didn't write and convert it into Bicep you can actually read.
+
 ## Status
 In progress
 
@@ -30,6 +32,11 @@ Think about what you've actually done across this section of the repo: hand-wrot
 ## Commands Used in This Lesson
 
 - `az bicep decompile` — Converts an existing ARM JSON template into Bicep, best-effort. Example: `az bicep decompile main.json`
+
+## Troubleshooting
+
+- az bicep decompile errors out completely instead of producing warnings. Some ARM JSON patterns don't have a known Bicep equivalent yet, that's a real limitation, note what triggered it.
+- The decompiled file looks nothing like your hand-written Bicep from module 2. Expected, the decompiler generates its own naming and structure, that's exactly why this module has you clean it up afterward.
 
 ## Key Terms
 See GLOSSARY.md. New here: Best-effort conversion (a tool does its best to translate automatically, but the output isn't guaranteed correct or complete without review).

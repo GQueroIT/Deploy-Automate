@@ -12,3 +12,9 @@ Your main.bicep file is getting cluttered with every resource inline. You want t
 - Hint 1: The module's own params must be satisfied inside the params: {} block of the module call, you can't skip a required one without a default just because it "should" be obvious.
 - Hint 2: To reference a module's output from the calling file, use moduleSymbolicName.outputs.outputName, not just the output name by itself.
 - Hint 3: The path in module storageModule 'storage.bicep' = { is relative to the calling file's location, keep both files in the same folder for this exercise to keep the path simple.
+
+## Expected Result
+Your main file should reference storage.bicep as a module and pass it real parameter values. The module's own file should have no knowledge of anything outside itself.
+
+## Cost & Cleanup
+If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.

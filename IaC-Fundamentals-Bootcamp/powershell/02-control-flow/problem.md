@@ -16,3 +16,6 @@ In solution.ps1:
 - Hint 1: foreach ($server in $servers) gives you one object per pass, access its properties with $server.Name and $server.Status.
 - Hint 2: Remember, comparisons use -eq, not ==. $server.Status -eq "Down" is correct, $server.Status == "Down" will error.
 - Hint 3: For the running count, declare a variable before the loop starts (like $downCount = 0) and increment it inside the if block for Down servers, incrementing inside the loop is what makes it a running total instead of resetting every pass.
+
+## Expected Result
+For a server with status 'Down', your script should print something visibly urgent. For 'Up', something calm. Your switch version should produce identical output to your if/elseif version for the same input data. Your running count should match exactly how many servers you set to 'Down'.

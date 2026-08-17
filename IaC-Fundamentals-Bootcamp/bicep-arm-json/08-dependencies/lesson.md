@@ -1,5 +1,7 @@
 # Dependencies: Implicit vs Explicit
 
+By the end of this module, you'll be able to express a real dependency between resources without ever writing dependsOn.
+
 ## Status
 In progress
 
@@ -53,9 +55,18 @@ Microsoft's own best-practices guidance is explicit: prefer implicit dependencie
 
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
 
+## Troubleshooting
+
+- Deployment fails or deploys in the wrong order with zero dependsOn entries. Confirm you're using parent correctly on the child resource, and that it actually points at the resource's symbolic name.
+- You added dependsOn out of habit and it's not obviously wrong, but it's unnecessary. If a property reference would create the same dependency implicitly, the explicit one is just noise.
+
 ## Key Terms
 See GLOSSARY.md. New here: Dependency graph (the full map of which resources must deploy before which others, built automatically from implicit and explicit dependencies together).
 
 ## Reference
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/resource-dependencies
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/best-practices
+
+## See Also
+
+- [Terraform module 06, Resource Dependencies](../../terraform/06-resource-dependencies/lesson.md)

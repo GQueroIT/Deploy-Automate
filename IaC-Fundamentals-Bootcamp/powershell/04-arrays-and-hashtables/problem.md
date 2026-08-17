@@ -16,3 +16,6 @@ In solution.ps1:
 - Hint 1: You must use bracket notation for this one, $printerByDept[$hire.Department], since the department name is stored in a variable/property, not typed literally. Dot notation won't work here.
 - Hint 2: Looking up a missing key in a hashtable with bracket notation returns $null rather than throwing an error, that's what makes the bonus possible, check if the result is $null before printing it.
 - Hint 3: [PSCustomObject]@{ Name = "..."; Department = "..." } is the same pattern you used for the server objects in module 2.
+
+## Expected Result
+For a hire in a department that exists in your hashtable, you should see their name paired with the correct printer. For a hire in a department that doesn't exist, you should see your 'no default printer configured' message, not an error.

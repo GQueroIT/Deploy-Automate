@@ -1,5 +1,7 @@
 # Outputs
 
+By the end of this module, you'll be able to return values from a deployment, and know exactly when to mark one @secure().
+
 ## Status
 In progress
 
@@ -37,6 +39,11 @@ output generatedPassword string = someSecretValue
 
 ### Why this is a real gotcha
 Outputs are visible in deployment history by default. If you output something sensitive without marking it @secure(), that value sits there in plain text in your deployment history for anyone with read access to see. This is an easy way to accidentally leak a secret even when you were careful about the parameter itself.
+
+## Troubleshooting
+
+- Your secure output still shows up in deployment history. Confirm @secure() is actually on the output declaration itself, not just on the parameter that feeds it, they're marked separately.
+- output storageAccountId returns null or an error. Confirm you're referencing the resource's symbolic name correctly with .id, not typing a made-up property name.
 
 ## Key Terms
 See GLOSSARY.md. No new terms this module beyond what's already covered, this one is mostly application of concepts from module 3.

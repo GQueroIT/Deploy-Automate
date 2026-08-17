@@ -1,5 +1,7 @@
 # Error Handling: Try/Catch/Finally
 
+By the end of this module, you'll be able to catch a failure with try/catch, understand why -ErrorAction Stop matters, and log a clean message instead of a stack trace.
+
 ## Status
 In progress
 
@@ -51,6 +53,11 @@ You can raise your own error deliberately with throw "some message", useful insi
 
 - `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
 - `Get-Item` — Gets an item at a given path, like a file. Used with -ErrorAction Stop to make it catchable. Example: `Get-Item -Path $path -ErrorAction Stop`
+
+## Troubleshooting
+
+- Your catch block never runs even though the command clearly failed. Almost always means the cmdlet threw a non-terminating error, add -ErrorAction Stop to that specific line.
+- $_.Exception.Message is empty or unhelpful inside catch. Make sure you're referencing $_ inside the catch block itself, it means something different, or nothing, anywhere else.
 
 ## Key Terms
 See GLOSSARY.md. New here: Exception (the object PowerShell creates describing what went wrong), Terminating error (stops execution immediately, catchable), Non-terminating error (reported but execution continues, not caught by try/catch unless forced with -ErrorAction Stop).

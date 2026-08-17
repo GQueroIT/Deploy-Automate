@@ -1,5 +1,7 @@
 # Parameters and Variables
 
+By the end of this module, you'll be able to write parameters with validation and secure values, and computed variables that keep you from repeating yourself.
+
 ## Status
 In progress
 
@@ -46,9 +48,18 @@ var instanceCount = environment == 'prod' ? 5 : 2
 
 That ternary (condition ? valueIfTrue : valueIfFalse) is a common pattern for computing a variable based on a parameter.
 
+## Troubleshooting
+
+- @secure() on an int or bool parameter throws an error. It only works on string or object types.
+- @allowed() rejects a value you're sure is in the list. Check for a typo or case mismatch, the match is exact.
+
 ## Key Terms
 See GLOSSARY.md. New here: Decorator, Sensitive value (data that shouldn't be exposed in logs or output, like a password).
 
 ## Reference
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/parameters
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/variables
+
+## See Also
+
+- [Terraform module 03, Variables and Outputs](../../terraform/03-variables-and-outputs/lesson.md)

@@ -16,3 +16,6 @@ Turn it into a proper standalone script:
 - Hint 1: The param() block must be the first executable line, comments and blank lines above it are fine, but no other code, not even a variable assignment, can come before it.
 - Hint 2: Comment-based help has to be a single contiguous <# ... #> block, formatted exactly with .SYNOPSIS, .DESCRIPTION etc. each on their own line, not scattered as separate # comments.
 - Hint 3: [CmdletBinding()] goes directly above param(), with nothing in between.
+
+## Expected Result
+Get-Help .\solution.ps1 -Full should display a synopsis, a description, and a parameter entry for each parameter you defined, plus at least one example, not an empty or generic help page.

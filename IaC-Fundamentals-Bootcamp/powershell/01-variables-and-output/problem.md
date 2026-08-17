@@ -16,3 +16,6 @@ Write a script (solution.ps1) that:
 - Hint 1: PowerShell builds strings out of variables using double quotes, not single quotes. Single quotes print the literal text, dollar sign and all.
 - Hint 2: One cmdlet from this lesson is for the person watching the screen. Another is for handing data to whatever comes next. They are not interchangeable, and using the wrong one will make step 4 impossible to verify.
 - Hint 3: String methods like .ToLower() and .Substring() will get you the pieces you need to build the username. You don't need a special cmdlet for this, strings in PowerShell already have these methods built in.
+
+## Expected Result
+Running your script should print an on-screen message like 'Generated username: jsmith' (from Write-Host) and separately output just 'jsmith' in a way you could capture into a variable. For John Smith, the username should be exactly jsmith, all lowercase.

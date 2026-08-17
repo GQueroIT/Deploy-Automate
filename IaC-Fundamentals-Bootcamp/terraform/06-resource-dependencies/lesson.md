@@ -1,5 +1,7 @@
 # Resource Dependencies
 
+By the end of this module, you'll be able to create a real dependency between two resources just by referencing an attribute, with zero depends_on.
+
 ## Status
 In progress
 
@@ -40,8 +42,17 @@ Terraform builds a full dependency graph from every implicit and explicit relati
 ### Same idea, different syntax
 If you worked through the bicep-arm-json section of this repo, this is the exact same implicit-vs-explicit concept from that section's dependencies module, just expressed in HCL instead of Bicep syntax.
 
+## Troubleshooting
+
+- The dependency doesn't show up correctly in plan even though you referenced an attribute. Confirm you're referencing the actual resource attribute, not a hardcoded copy of the same string that happens to match.
+- Changing the resource group triggers unrelated changes elsewhere. That's the dependency graph working correctly, a real upstream change should ripple to anything that depends on it.
+
 ## Key Terms
 See GLOSSARY.md. Reinforces: Dependency graph.
 
 ## Reference
 - https://developer.hashicorp.com/terraform/language/resources/behavior
+
+## See Also
+
+- [Bicep module 08, Dependencies: Implicit vs Explicit](../../bicep-arm-json/08-dependencies/lesson.md)

@@ -16,3 +16,6 @@ In solution.tf:
 - Hint 1: The validation condition pattern condition = can(regex("^rg-", var.resource_group_name)) is a common, reliable way to check a string prefix, can() catches the error a failed regex would otherwise throw and turns it into a clean true/false.
 - Hint 2: terraform plan -var-file="dev.tfvars" is the flag, the filename doesn't have to be terraform.tfvars (which loads automatically), naming it dev.tfvars means you have to point at it explicitly.
 - Hint 3: An output's value can reference any resource attribute in your configuration, azurerm_storage_account.example.name, exactly like referencing it anywhere else.
+
+## Expected Result
+Running plan with a resource_group_name that doesn't start with 'rg-' should fail immediately with your custom error message. Using dev.tfvars should let plan succeed without you typing the value manually.

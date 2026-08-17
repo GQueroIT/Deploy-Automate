@@ -14,3 +14,9 @@ In solution.tf:
 - Hint 1: az login before running any terraform command is the easiest authentication path for local practice, confirm you're logged into the right subscription with az account show before you plan against it.
 - Hint 2: Azure region values for the location argument are lowercase strings like "eastus", not display names like "East US", using the wrong format will cause plan or apply to fail.
 - Hint 3: If plan shows more than 1 resource to add, or shows changes to something you didn't expect, check whether you're accidentally still holding onto resources from an earlier module in the same .tf files.
+
+## Expected Result
+terraform plan should show exactly 1 resource to add, the resource group, and nothing else. az account show should confirm you're authenticated against the subscription you expect.
+
+## Cost & Cleanup
+A resource group by itself is free, but get in the habit now: run terraform destroy when you're done experimenting with each module so nothing lingers.

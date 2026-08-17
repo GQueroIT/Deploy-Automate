@@ -1,5 +1,7 @@
 # Remote State Basics (HCP Terraform)
 
+By the end of this module, you'll be able to migrate a configuration from local state to a remote backend.
+
 ## Status
 In progress
 
@@ -39,6 +41,11 @@ A data source that lets one completely separate Terraform configuration read the
 ## Commands Used in This Lesson
 
 - `terraform login` — Authenticates the Terraform CLI itself against HCP Terraform, separate from cloud provider auth. Example: `terraform login`
+
+## Troubleshooting
+
+- terraform init after adding the cloud {} block doesn't offer to migrate your state. Confirm the block is formatted correctly and that you're logged in with terraform login first.
+- terraform login opens a browser but nothing happens afterward. This is separate from az login, confirm you're completing the HCP Terraform authentication flow, not your Azure one.
 
 ## Key Terms
 See GLOSSARY.md. New here: Backend (where and how Terraform stores its state file), Remote state (state stored somewhere other than your local disk, typically for team collaboration and security).

@@ -15,3 +15,9 @@ In solution.bicep:
 - Hint 1: The if goes directly after the = sign, and the for goes inside the square brackets that follow it, both on the same resource declaration.
 - Hint 2: Each looped NSG needs a unique name, that's what the loop variable (the item from nsgNames) is for, don't hardcode a single name inside the loop body or every instance will collide.
 - Hint 3: If you're unsure whether your if and for are combined correctly, look at how Microsoft's own docs show the combined syntax, the loop syntax wraps the whole object, and the if sits just before the opening curly brace of that object.
+
+## Expected Result
+With deployNsgs set to true, compiling should show three separate NSG resources in the output, each with a distinct name matching an entry in your array. With it false, zero NSGs should appear.
+
+## Cost & Cleanup
+NSGs themselves are free, but clean up the resource group when you're done experimenting: az group delete --name <your-rg> --yes --no-wait.

@@ -1320,14 +1320,121 @@ def commands_used_section(lesson_text: str) -> str:
     lines.append("")
     return "\n".join(lines) + "\n"
 
+
+# --- Per-module enhancements (outcomes, troubleshooting, expected results, cost/cleanup, cross-links) ---
+
+OUTCOMES = {
+"01-variables-and-output": "By the end of this module, you'll be able to store values in variables, build a message from them with string interpolation, and know exactly when to use Write-Host versus Write-Output.",
+"02-control-flow": "By the end of this module, you'll be able to branch logic with if/elseif/else or switch, and loop over a list of items with foreach.",
+"03-functions": "By the end of this module, you'll be able to write a reusable function with parameters, defaults, and a return value, and understand why a variable inside it doesn't leak out.",
+"04-arrays-and-hashtables": "By the end of this module, you'll be able to choose between an array and a hashtable for a given problem, and look values up by index or by key.",
+"05-the-pipeline": "By the end of this module, you'll be able to filter, sort, and trim down pipeline output to just what you need, and find a property name yourself with Get-Member.",
+"06-string-manipulation": "By the end of this module, you'll be able to pull apart a raw string into its pieces and rebuild a clean, formatted line from them.",
+"07-error-handling": "By the end of this module, you'll be able to catch a failure with try/catch, understand why -ErrorAction Stop matters, and log a clean message instead of a stack trace.",
+"08-files-and-csv": "By the end of this module, you'll be able to read and write files and CSVs, and know why everything that comes back from a CSV is a string.",
+"09-json-in-powershell": "By the end of this module, you'll be able to convert PowerShell data to and from JSON, and know why -Depth matters.",
+"10-script-structure": "By the end of this module, you'll be able to turn a script into a properly documented, parameter-driven tool that Get-Help can read.",
+"11-az-powershell-basics": "By the end of this module, you'll be able to connect to Azure from PowerShell, confirm which subscription you're pointed at, and pull back a clean list of what's actually there.",
+}
+
+TROUBLESHOOTING = {
+"01-variables-and-output": [
+ "Nothing prints when you use Write-Host inside a function and try to capture the result. That's expected, Write-Host never goes into the pipeline, switch to Write-Output if you need the value usable elsewhere.",
+ "'Hello, $firstName' prints the literal text instead of the value. You're inside single quotes, only double quotes interpolate variables.",
+],
+"02-control-flow": [
+ "if ($status == \"Down\") throws an error. PowerShell doesn't use ==, use -eq instead.",
+ "A switch statement runs every matching block, not just the first one. If you expected 'first match wins' like some other languages, that's not how PowerShell's switch behaves by default.",
+],
+"03-functions": [
+ "Calling your function before its definition in the script throws 'not recognized'. PowerShell reads top to bottom, define the function above where you call it.",
+ "A variable you set inside the function shows up as empty outside it. That's function scope working correctly, not a bug, it's not supposed to leak out.",
+],
+"04-arrays-and-hashtables": [
+ "$hash['Key'] returns nothing but the key definitely exists. Hashtable keys are case-sensitive by default, double check the exact casing you used.",
+ "Adding to an array with += inside a loop feels slow. That's real, += rebuilds the whole array each time, fine for exercises this size, but worth knowing why it doesn't scale.",
+],
+"05-the-pipeline": [
+ "Where-Object { $_.Property } returns nothing, but you know matching objects exist. Confirm the exact property name with Get-Member rather than guessing at it.",
+ "Piping into Sort-Object -Descending sorts the wrong direction. Double check nothing upstream already reordered it.",
+],
+"06-string-manipulation": [
+ "$line.Split(\" \") gives you way more pieces than expected. A message with multiple words splits on every space, not just the first few, use the overload that takes a count limit if you only want a certain number of pieces.",
+ ".Substring(0, 1) throws 'index out of range'. This happens on an empty string, always confirm your string actually has content before slicing it.",
+],
+"07-error-handling": [
+ "Your catch block never runs even though the command clearly failed. Almost always means the cmdlet threw a non-terminating error, add -ErrorAction Stop to that specific line.",
+ "$_.Exception.Message is empty or unhelpful inside catch. Make sure you're referencing $_ inside the catch block itself, it means something different, or nothing, anywhere else.",
+],
+"08-files-and-csv": [
+ "A value that looks like a number from Import-Csv won't compare correctly. Everything from CSV is a string, cast it explicitly, like [int] or [datetime], before comparing or doing math.",
+ "Export-Csv adds a strange first line to the file. That's a type-information header some versions add by default, -NoTypeInformation removes it.",
+],
+"09-json-in-powershell": [
+ "Deeply nested data goes missing after ConvertTo-Json. You hit the default -Depth of 2, set it explicitly higher for anything with real nesting.",
+ "ConvertFrom-Json fails on a file you know is valid JSON. Check whether you used Get-Content without -Raw, it hands over an array of lines instead of one string.",
+],
+"10-script-structure": [
+ "Get-Help .\\script.ps1 -Full shows nothing useful. The comment-based help block has to be a single contiguous block with the exact .SYNOPSIS/.DESCRIPTION formatting, sitting right above or below the param block.",
+ "The script errors immediately with 'param is not recognized'. Something came before param() in the file, it has to be the very first real statement.",
+],
+"11-az-powershell-basics": [
+ "Get-AzResourceGroup returns 'Run Connect-AzAccount to login'. The session isn't authenticated yet, or it expired, reconnect.",
+ "Commands run successfully but against the wrong subscription. Always check Get-AzContext before running anything, especially if your account has access to more than one subscription.",
+],
+}
+
+EXPECTED_RESULTS = {
+"01-variables-and-output": "Running your script should print an on-screen message like 'Generated username: jsmith' (from Write-Host) and separately output just 'jsmith' in a way you could capture into a variable. For John Smith, the username should be exactly jsmith, all lowercase.",
+"02-control-flow": "For a server with status 'Down', your script should print something visibly urgent. For 'Up', something calm. Your switch version should produce identical output to your if/elseif version for the same input data. Your running count should match exactly how many servers you set to 'Down'.",
+"03-functions": "Calling Get-DiskSpaceStatus should return an object with DriveLetter, PercentUsed, and IsOverThreshold properties you can access with dot notation. Calling it twice with different parameters should give you two different results, not the same one twice.",
+"04-arrays-and-hashtables": "For a hire in a department that exists in your hashtable, you should see their name paired with the correct printer. For a hire in a department that doesn't exist, you should see your 'no default printer configured' message, not an error.",
+"05-the-pipeline": "Your final output should be at most 5 rows, each showing only Name and WorkingSet, sorted with the highest memory user first.",
+"06-string-manipulation": "Your parsed output should correctly separate the date, time, level, and extract the server name and percentage as their own values from the message text, all shown in your final formatted line.",
+"07-error-handling": "Testing a path you know exists should print a success-flavored message and your finally message. Testing a fake path should print your friendly 'Could not find...' message with the actual reason, not a wall of red PowerShell error text, plus your finally message either way.",
+"08-files-and-csv": "Your re-imported CSV data should filter down to only the department you specified, hires from other departments should not appear at all in that filtered output.",
+"09-json-in-powershell": "With the default -Depth, printed JSON for your nested config should visibly cut off or flatten your deepest nested values. With -Depth set high enough, the same conversion should show every level intact, and reading it back should let you access that deep value directly.",
+"10-script-structure": "Get-Help .\\solution.ps1 -Full should display a synopsis, a description, and a parameter entry for each parameter you defined, plus at least one example, not an empty or generic help page.",
+"11-az-powershell-basics": "Get-AzContext should show your actual subscription name, not blank or an error. Your resource group table should list real resource group names and locations, formatted as a clean two-column table, not a wall of raw properties.",
+}
+
+SEE_ALSO = {
+"09-json-in-powershell": [("Bicep/ARM/JSON module 01, ARM JSON Anatomy", "../../bicep-arm-json/01-arm-json-anatomy/lesson.md")],
+"11-az-powershell-basics": [("Terraform module 05, The azurerm Provider", "../../terraform/05-azurerm-provider/lesson.md")],
+}
+
+COST_CLEANUP = {}
+
 def write_module(section_path: Path, slug: str, content: dict):
     module_path = section_path / slug
     module_path.mkdir(parents=True, exist_ok=True)
-    lesson_with_commands = content["lesson"].replace(
-        "## Key Terms", commands_used_section(content["lesson"]) + "## Key Terms", 1
-    )
-    (module_path / "lesson.md").write_text(make_interactive(lesson_with_commands))
-    (module_path / "problem.md").write_text(content["problem"])
+
+    lesson_text = content["lesson"]
+
+    if slug in OUTCOMES:
+        title_end = lesson_text.index("\n")
+        lesson_text = lesson_text[:title_end] + "\n\n" + OUTCOMES[slug] + lesson_text[title_end:]
+
+    insert_block = commands_used_section(content["lesson"])
+    if slug in TROUBLESHOOTING:
+        items = "\n".join(f"- {item}" for item in TROUBLESHOOTING[slug])
+        insert_block += "## Troubleshooting\n\n" + items + "\n\n"
+    lesson_text = lesson_text.replace("## Key Terms", insert_block + "## Key Terms", 1)
+
+    if slug in SEE_ALSO:
+        lines = ["## See Also", ""]
+        for label, rel_path in SEE_ALSO[slug]:
+            lines.append(f"- [{label}]({rel_path})")
+        lesson_text = lesson_text.rstrip("\n") + "\n\n" + "\n".join(lines) + "\n"
+
+    (module_path / "lesson.md").write_text(make_interactive(lesson_text))
+
+    problem_text = content["problem"]
+    if slug in EXPECTED_RESULTS:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Expected Result\n" + EXPECTED_RESULTS[slug] + "\n"
+    if slug in COST_CLEANUP:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Cost & Cleanup\n" + COST_CLEANUP[slug] + "\n"
+    (module_path / "problem.md").write_text(problem_text)
 
 def build():
     base = Path(REPO_NAME)

@@ -16,3 +16,6 @@ In solution.ps1:
 - Hint 1: Get-AzResourceGroup returns full objects with a lot of properties, Format-Table -Property ResourceGroupName, Location narrows it to just what you want to see.
 - Hint 2: Get-AzContext returns $null (or an empty result) if you're not connected yet, that's exactly what you can check for in the bonus.
 - Hint 3: Connecting is a one-time-per-session thing, if you're testing this script repeatedly in the same PowerShell window, you don't need to reconnect every single run.
+
+## Expected Result
+Get-AzContext should show your actual subscription name, not blank or an error. Your resource group table should list real resource group names and locations, formatted as a clean two-column table, not a wall of raw properties.

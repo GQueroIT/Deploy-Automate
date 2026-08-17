@@ -17,3 +17,6 @@ In solution.ps1, write a single pipeline (you can run this against your own real
 - Hint 1: WorkingSet is the property name for memory usage on a process object, confirm this yourself by running Get-Process | Get-Member and looking for it in the property list, rather than trusting it blind.
 - Hint 2: The order of the pipeline matters for performance, filter first with Where-Object before sorting, so you're not sorting a huge list you're about to throw most of away anyway.
 - Hint 3: -First belongs to Select-Object, not Sort-Object, don't try to limit the count in the wrong cmdlet.
+
+## Expected Result
+Your final output should be at most 5 rows, each showing only Name and WorkingSet, sorted with the highest memory user first.

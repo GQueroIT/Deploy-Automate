@@ -15,3 +15,9 @@ In solution.bicep:
 - Hint 1: This is the exact pattern from module 6's conditionals-and-loops lesson, minus the if, reuse that shape directly.
 - Hint 2: Referencing the loop item directly inside the block body (name: name if your loop variable is called name) is what makes each instance unique, don't accidentally reference the original nsgNames parameter instead of the loop variable.
 - Hint 3: An output loop uses the same [for item in collection: expression] syntax, just on an output instead of a resource.
+
+## Expected Result
+Compiling with three names in your array parameter should produce three distinct NSG resources in the output, each matching its corresponding array entry, not three copies of the same name.
+
+## Cost & Cleanup
+NSGs are free, but clean up the resource group when you're done: az group delete --name <your-rg> --yes --no-wait.

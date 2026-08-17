@@ -1,5 +1,7 @@
 # Functions: Params, Return Values, Scope
 
+By the end of this module, you'll be able to write a reusable function with parameters, defaults, and a return value, and understand why a variable inside it doesn't leak out.
+
 ## Status
 In progress
 
@@ -50,6 +52,11 @@ A variable created inside a function only exists inside that function by default
 
 - `Write-Output` — Sends a value into the pipeline so it can be captured, piped, or returned. Example: `Write-Output $value`
 - `Get-PSDrive` — Returns info about drives on the system, including used and free space. Example: `Get-PSDrive -Name C`
+
+## Troubleshooting
+
+- Calling your function before its definition in the script throws 'not recognized'. PowerShell reads top to bottom, define the function above where you call it.
+- A variable you set inside the function shows up as empty outside it. That's function scope working correctly, not a bug, it's not supposed to leak out.
 
 ## Key Terms
 See GLOSSARY.md. New here: Function, Scope (a variable's scope is where in the script it's visible and usable), Return value.

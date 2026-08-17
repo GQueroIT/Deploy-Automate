@@ -1,5 +1,7 @@
 # Expressions and Built-In Functions
 
+By the end of this module, you'll be able to generate a globally-unique, idempotent resource name instead of hardcoding one that will eventually collide.
+
 ## Status
 In progress
 
@@ -42,6 +44,11 @@ A hardcoded storage account name like 'mystorageaccount' will fail to deploy the
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
 - `subscription()` — Bicep function, returns info about the current subscription. Example: `subscription().subscriptionId`
 - `uniqueString()` — Bicep function, generates a deterministic hash string from its inputs, same inputs always produce the same output. Example: `uniqueString(resourceGroup().id)`
+
+## Troubleshooting
+
+- Deployment fails with 'storage account name already exists' on a name you just made up. Storage account names are globally unique across all of Azure, not just your subscription, that's exactly why uniqueString() exists.
+- uniqueString(resourceGroup().id) seems to give a different result each time. It shouldn't, it's deterministic for the same resource group, check you're not mixing in something non-deterministic in the same expression.
 
 ## Key Terms
 See GLOSSARY.md. New here: Expression (a computed value evaluated at deployment time, built from functions, variables, and operators), Deterministic function (same input always produces the same output, as opposed to something random).

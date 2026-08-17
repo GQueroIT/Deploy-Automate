@@ -1,5 +1,7 @@
 # Lifecycle Blocks
 
+By the end of this module, you'll be able to protect a critical resource from accidental destruction and control replacement behavior.
+
 ## Status
 In progress
 
@@ -33,6 +35,11 @@ The real gotcha: this rule only protects the resource while the lifecycle block 
 
 ### ignore_changes
 ignore_changes = [ attribute, ... ] tells Terraform to stop flagging drift on specific attributes, useful when something outside Terraform, an autoscaler, a manual tag someone adds through the portal, legitimately and repeatedly changes a value you don't want constantly fighting with your configuration on every plan. Use ignore_changes = all to ignore every attribute (Terraform can still create and destroy the object, but will never propose an update to it).
+
+## Troubleshooting
+
+- terraform destroy on a protected resource fails with an unhelpful-looking error. Read it carefully, it names the exact resource and setting blocking it, that's prevent_destroy doing its job.
+- You removed the whole resource block to get around prevent_destroy and now Terraform wants to destroy it for real. Expected, the protection only exists while the block does, remove just the setting first, apply, then destroy.
 
 ## Key Terms
 See GLOSSARY.md. New here: Downtime (a gap where a resource is unavailable, relevant to why create_before_destroy exists), reinforces Drift from module 4.

@@ -1,5 +1,7 @@
 # The Pipeline: Where-Object, Sort-Object, Select-Object
 
+By the end of this module, you'll be able to filter, sort, and trim down pipeline output to just what you need, and find a property name yourself with Get-Member.
+
 ## Status
 In progress
 
@@ -79,6 +81,11 @@ Get-Process |
 - `Sort-Object` — Sorts objects in the pipeline by a property. Example: `... | Sort-Object -Property Name -Descending`
 - `Select-Object` — Picks specific properties to keep, or limits how many objects pass through. Example: `... | Select-Object -Property Name -First 5`
 - `Get-Member` — Lists every property and method attached to an object. Example: `... | Get-Member`
+
+## Troubleshooting
+
+- Where-Object { $_.Property } returns nothing, but you know matching objects exist. Confirm the exact property name with Get-Member rather than guessing at it.
+- Piping into Sort-Object -Descending sorts the wrong direction. Double check nothing upstream already reordered it.
 
 ## Key Terms
 See GLOSSARY.md. New here: Filter (narrowing a set of objects down by a condition), Script block (the { } code passed to Where-Object, treated as a chunk of code rather than run immediately), Property (a named piece of data attached to an object, like .WorkingSet on a process).

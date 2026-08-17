@@ -1,5 +1,7 @@
 # Writing and Calling Modules
 
+By the end of this module, you'll be able to package resources into a reusable child module and call it more than once with different inputs.
+
 ## Status
 In progress
 
@@ -59,9 +61,18 @@ Only expose the outputs a caller actually needs, don't leak internal implementat
 
 - `terraform apply` — Executes a plan and actually creates or changes real resources. Example: `terraform apply`
 
+## Troubleshooting
+
+- Calling the module a second time reuses the same resource names and collides. Each module call needs distinct input values, not just a distinct local name for the call itself.
+- A variable you expect the child module to see isn't available inside it. Nothing is implicitly shared, every value the module needs has to be explicitly passed in.
+
 ## Key Terms
 See GLOSSARY.md. New here: Root module (the top-level configuration you run apply on), Child module (a reusable module called by another configuration), Interface (the specific inputs a module accepts and outputs it exposes, its contract with whatever calls it).
 
 ## Reference
 - https://developer.hashicorp.com/terraform/language/modules/develop
 - https://developer.hashicorp.com/terraform/language/block/module
+
+## See Also
+
+- [Bicep module 07, Modules](../../bicep-arm-json/07-modules/lesson.md)

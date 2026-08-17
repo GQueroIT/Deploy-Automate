@@ -14,3 +14,9 @@ Your resource group + storage account pattern from earlier modules is something 
 - Hint 1: A child module's variables.tf has no idea what variables exist in your root configuration, everything it needs has to be explicitly passed in through the module block's arguments, there's no implicit sharing.
 - Hint 2: Calling the same module twice means giving each call a different local name (module "dev_storage" and module "prod_storage", for example), and each call needs to result in different actual resource names to avoid a naming collision in Azure.
 - Hint 3: Reference an output from either call in your root file as module.dev_storage.storage_account_name, the local name you gave the module call is part of the reference path.
+
+## Expected Result
+Calling your module twice with two different name prefixes should result in terraform plan showing two full sets of resources, distinct from each other, not a collision or duplicate-name error.
+
+## Cost & Cleanup
+Two full environments means double the resources. terraform destroy tears down everything the root configuration manages in one command.

@@ -16,3 +16,6 @@ In solution.ps1:
 - Hint 1: -NoTypeInformation on Export-Csv keeps a stray type-metadata line out of the top of your CSV file, worth adding as a habit.
 - Hint 2: Everything from Import-Csv is a string. If your bonus comparison against "this month" isn't working, check what type StartDate actually is with $hire.StartDate.GetType(), it's probably not what you expect.
 - Hint 3: [datetime]"2026-08-01" converts a string into a real date object you can compare and do math on.
+
+## Expected Result
+Your re-imported CSV data should filter down to only the department you specified, hires from other departments should not appear at all in that filtered output.

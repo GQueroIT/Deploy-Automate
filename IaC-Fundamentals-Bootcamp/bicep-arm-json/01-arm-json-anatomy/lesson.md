@@ -1,5 +1,7 @@
 # ARM JSON Anatomy
 
+By the end of this module, you'll be able to read and hand-write a complete ARM JSON template from scratch, and explain what each of the six sections actually does.
+
 ## Status
 In progress
 
@@ -60,6 +62,11 @@ Anything inside square brackets in ARM JSON is a function call being evaluated, 
 
 - `resourceId()` — ARM template function, builds the full resource ID for a resource from its type and name. Example: `resourceId('Microsoft.Storage/storageAccounts', parameters('name'))`
 
+## Troubleshooting
+
+- Deployment fails with a message about a missing required property on the storage account. sku and kind are both required and easy to forget.
+- You're not sure what apiVersion to use. Never guess it, look up the current one for that exact resource type on Microsoft's ARM reference, an outdated apiVersion can silently reject valid properties.
+
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: JSON, ARM template, Resource provider, API version, Schema, Declarative.
 
@@ -67,3 +74,8 @@ See GLOSSARY.md at the repo root. This module leans on: JSON, ARM template, Reso
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/data-types
+
+## See Also
+
+- [PowerShell module 09, JSON in PowerShell](../../powershell/09-json-in-powershell/lesson.md)
+- [Terraform module 04, State](../../terraform/04-state/lesson.md)

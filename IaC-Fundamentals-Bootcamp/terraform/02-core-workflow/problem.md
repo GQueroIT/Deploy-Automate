@@ -13,3 +13,6 @@ Before touching anything in Azure, you want to run the full Terraform lifecycle 
 - Hint 1: local_file lives in a completely separate provider (hashicorp/local) from azurerm, it needs its own entry in required_providers alongside the one from module 1.
 - Hint 2: terraform init has to be re-run any time you add a new provider to required_providers, even if you already ran it once before for azurerm alone.
 - Hint 3: Watch the plan output closely before typing yes on apply, confirm it says exactly 1 to add and nothing else, that habit is the entire point of this exercise.
+
+## Expected Result
+terraform plan should show exactly 1 to add before apply. After apply, the file should actually exist on disk. After destroy, terraform state list should show nothing.

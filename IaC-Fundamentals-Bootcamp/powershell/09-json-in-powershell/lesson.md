@@ -1,5 +1,7 @@
 # JSON in PowerShell: ConvertTo-Json / ConvertFrom-Json
 
+By the end of this module, you'll be able to convert PowerShell data to and from JSON, and know why -Depth matters.
+
 ## Status
 In progress
 
@@ -57,9 +59,18 @@ This is the exact same JSON format you hand-wrote in the bicep-arm-json section 
 - `ConvertTo-Json` — Converts a PowerShell object into a JSON string. Example: `$data | ConvertTo-Json -Depth 10`
 - `ConvertFrom-Json` — Parses a JSON string into a PowerShell object. Example: `$json | ConvertFrom-Json`
 
+## Troubleshooting
+
+- Deeply nested data goes missing after ConvertTo-Json. You hit the default -Depth of 2, set it explicitly higher for anything with real nesting.
+- ConvertFrom-Json fails on a file you know is valid JSON. Check whether you used Get-Content without -Raw, it hands over an array of lines instead of one string.
+
 ## Key Terms
 See GLOSSARY.md. New here: Serialization (converting a value into a storable/transmittable format like JSON), Deserialization (the reverse, turning that format back into a usable value).
 
 ## Reference
 - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertto-json
 - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertfrom-json
+
+## See Also
+
+- [Bicep/ARM/JSON module 01, ARM JSON Anatomy](../../bicep-arm-json/01-arm-json-anatomy/lesson.md)

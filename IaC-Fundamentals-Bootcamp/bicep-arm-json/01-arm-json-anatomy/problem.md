@@ -17,3 +17,6 @@ You are not deploying this yet, that comes once you've got Bicep and the Azure C
 - Hint 1: Look up the current apiVersion and required properties for Microsoft.Storage/storageAccounts in Microsoft's ARM template reference rather than guessing. Storage accounts also require a sku and a kind, those aren't optional.
 - Hint 2: A parameter with a defaultValue is optional at deploy time. One without a defaultValue is required, whoever runs the deployment has to supply it.
 - Hint 3: Outputs typically use the resourceId() function or a reference() expression to point back at a resource you already declared in the resources array.
+
+## Expected Result
+Your solution.json should be valid JSON (no trailing commas, matched braces) with exactly one parameter that has no default and one that does. Running it through any JSON validator should show zero errors.

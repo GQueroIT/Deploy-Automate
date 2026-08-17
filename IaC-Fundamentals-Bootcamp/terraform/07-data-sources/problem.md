@@ -14,3 +14,9 @@ In solution.tf:
 - Hint 1: The arguments a specific data source accepts (just name for azurerm_resource_group, for example) come from that data source's page in the provider docs, don't assume every data source takes the same arguments.
 - Hint 2: If plan shows the resource group itself as something to be created or modified, you've accidentally used a resource block instead of a data block somewhere, double check the block type.
 - Hint 3: Deliberately typo the resource group name and run plan again, watch what error Terraform gives you, that's the sanity-check behavior mentioned in the lesson, worth seeing once on purpose.
+
+## Expected Result
+terraform plan should show zero changes to the resource group the data source looked up, only the new storage account should show as something to create.
+
+## Cost & Cleanup
+The data source itself costs nothing, it only reads. If you created a real storage account alongside it, terraform destroy when you're done.

@@ -1,5 +1,7 @@
 # Reading Plan Output and terraform state Commands
 
+By the end of this module, you'll be able to read plan output correctly and fix a state mismatch without destroying and recreating something that didn't need to change.
+
 ## Status
 In progress
 
@@ -49,6 +51,11 @@ All state-modifying subcommands write a local backup file automatically before m
 - `terraform state list` — Lists every resource address currently tracked in state. Example: `terraform state list`
 - `terraform state show` — Prints the full recorded attributes for one specific resource in state. Example: `terraform state show azurerm_resource_group.example`
 - `terraform state mv` — Renames or moves a resource's tracked address in state without destroying and recreating it. Example: `terraform state mv old_address new_address`
+
+## Troubleshooting
+
+- terraform state mv fails saying the source address doesn't exist. Run terraform state list first and copy the address exactly as shown.
+- After the state mv, plan still shows a change. Confirm you moved to the exact new address your renamed resource block actually uses, a small typo will still show as a mismatch.
 
 ## Key Terms
 See GLOSSARY.md. New here: Replacement (destroy and recreate, shown as -/+ in plan output), In-place update (a change applied to the existing object without destroying it, shown as ~).

@@ -18,3 +18,6 @@ In solution.ps1:
 - Hint 1: .Split(" ") on the whole line gives you an array, but the message itself also contains spaces, so splitting on space alone gives you more pieces than just 4, think about how many pieces you actually need vs. how many you get, and consider .Split(" ", 4) which limits the number of resulting pieces.
 - Hint 2: The percentage and server name are both embedded inside that last chunk of text, you'll need a second, smaller split or .Replace() on just that piece rather than trying to solve it in one split.
 - Hint 3: -f uses positional placeholders like {0} and {1} that get replaced in order by whatever values you list after the -f, in the order you list them.
+
+## Expected Result
+Your parsed output should correctly separate the date, time, level, and extract the server name and percentage as their own values from the message text, all shown in your final formatted line.

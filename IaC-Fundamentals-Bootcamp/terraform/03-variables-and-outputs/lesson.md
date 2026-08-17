@@ -1,5 +1,7 @@
 # Variables and Outputs
 
+By the end of this module, you'll be able to write validated input variables and expose outputs, and supply values through a tfvars file instead of hardcoding them.
+
 ## Status
 In progress
 
@@ -61,9 +63,18 @@ This is the standard way to keep per-environment values (dev.tfvars, prod.tfvars
 
 - `terraform plan` — Previews what would change, without touching anything. Example: `terraform plan`
 
+## Troubleshooting
+
+- Your validation rule doesn't trigger even on an obviously bad value. Double-check the regex inside can(regex(...)), a small mistake there can make the check always pass.
+- plan doesn't pick up your dev.tfvars file. -var-file has to be passed explicitly on the command line, only a file literally named terraform.tfvars loads automatically.
+
 ## Key Terms
 See GLOSSARY.md. New here: Input value (a variable's role, accepting data into a configuration), Output value (a value exposed after apply), Validation rule (a condition a variable's value must satisfy before Terraform will proceed).
 
 ## Reference
 - https://developer.hashicorp.com/terraform/language/values
 - https://developer.hashicorp.com/terraform/tutorials/configuration-language/variables
+
+## See Also
+
+- [Bicep module 03, Parameters and Variables](../../bicep-arm-json/03-parameters-and-variables/lesson.md)

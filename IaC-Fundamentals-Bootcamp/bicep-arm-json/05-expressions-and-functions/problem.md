@@ -15,3 +15,9 @@ Fix it in solution.bicep:
 - Hint 1: uniqueString() returns a fixed-length string of lowercase letters and numbers, that's exactly the character set storage account names require, which is part of why it's the standard tool for this.
 - Hint 2: Storage account names cannot contain dashes or uppercase letters, if your prefix has either, the deployment will reject it even though the uniqueString() portion is fine.
 - Hint 3: Because uniqueString(resourceGroup().id) is deterministic, redeploying this same file into the same resource group will always compute the exact same name, that's a feature, not a bug, it's what keeps redeployments idempotent instead of creating duplicates.
+
+## Expected Result
+Compiling twice in a row without changing anything should produce the exact same storage account name both times, that's the deterministic part working. The name should contain only lowercase letters and numbers.
+
+## Cost & Cleanup
+If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.

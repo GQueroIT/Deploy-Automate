@@ -1,5 +1,7 @@
 # Deployment Scopes
 
+By the end of this module, you'll be able to write a subscription-scoped deployment that creates a resource group and deploys into it in one shot.
+
 ## Status
 In progress
 
@@ -54,6 +56,11 @@ A resource-group-scoped file deploys with az deployment group create. A subscrip
 
 - `az deployment group create` — Deploys a Bicep or ARM template into a specific resource group. Example: `az deployment group create --resource-group rg-name --template-file main.bicep`
 - `az deployment sub create` — Deploys a subscription-scoped Bicep or ARM template. Example: `az deployment sub create --location eastus --template-file main.bicep`
+
+## Troubleshooting
+
+- az deployment sub create fails with a message about a missing --location. Subscription-scoped deployments need it explicitly, there's no resource group yet to imply a region.
+- The module deploys before the resource group exists. Confirm the module's scope: property points at the resource group's symbolic name you declared in the same file.
 
 ## Key Terms
 See GLOSSARY.md. New here: Scope hierarchy (tenant contains management groups, which contain subscriptions, which contain resource groups, which contain resources, each level down is a narrower scope).

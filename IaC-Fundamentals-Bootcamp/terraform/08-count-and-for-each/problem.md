@@ -14,3 +14,9 @@ You need the same three storage accounts from the Bicep loops module (logs, back
 - Hint 1: With count, index 2 refers to whatever is currently the third item in the list, if you remove item 1 (the middle one), what used to be item 2 shifts down to become the new item 1, that's the shift that causes the unexpected plan.
 - Hint 2: toset(["logs", "backups", "archive"]) is required for for_each here, a plain list without toset() won't work directly with for_each in this context.
 - Hint 3: each.key is how you reference the current item inside a for_each block, count.index is the equivalent for a count block, don't mix them up between the two versions.
+
+## Expected Result
+Removing the middle item from your count-based list should show plan wanting to destroy and recreate at least one resource you didn't intend to touch. The for_each version, with the same removal, should show only that one item affected.
+
+## Cost & Cleanup
+Storage accounts here are minimal cost, but don't leave three or six sitting around, terraform destroy when you're done comparing the two versions.

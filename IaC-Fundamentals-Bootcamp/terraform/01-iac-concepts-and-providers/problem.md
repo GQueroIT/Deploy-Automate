@@ -16,3 +16,6 @@ Don't run terraform init yet unless you already have Terraform installed and Azu
 - Hint 1: The azurerm provider's page on the Terraform Registry shows the exact source string and current major version right in its usage example.
 - Hint 2: required_providers lives inside a terraform {} block. The provider block that actually configures azurerm is a separate block, outside that terraform {} block.
 - Hint 3: Recent azurerm provider versions will error out on terraform init if a specific block is missing from provider "azurerm", even with nothing inside it.
+
+## Expected Result
+terraform validate should pass with no errors once your provider block includes the features {} argument. You shouldn't need internet access or real Azure credentials for this module, it's structure only.

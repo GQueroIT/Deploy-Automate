@@ -1,5 +1,7 @@
 # IaC Concepts, Providers, Resource Blocks
 
+By the end of this module, you'll be able to declare which provider a Terraform configuration needs and configure it correctly, including the quirks that trip up a first init.
+
 ## Status
 In progress
 
@@ -49,6 +51,11 @@ You'll go deep on these in a later module, but the shape is: resource "<provider
 ## Commands Used in This Lesson
 
 - `terraform init` — Prepares the working directory and downloads required providers. Example: `terraform init`
+
+## Troubleshooting
+
+- terraform init fails immediately after adding the provider block. Recent azurerm versions require the features {} block even empty, missing it is the single most common first-run error.
+- init downloads a newer provider version than you expected. You didn't pin a version constraint, or pinned it too loosely, tighten the version argument in required_providers.
 
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: HCL, Provider, Resource block, Declarative, Idempotent.

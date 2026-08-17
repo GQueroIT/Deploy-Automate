@@ -13,3 +13,6 @@ You want to actually see state working, not just read about it, using the harmle
 - Hint 1: terraform state list gives you the exact address string (like local_file.example) you need to pass into terraform state show, don't guess at the format.
 - Hint 2: Resist the urge to actually change anything in the raw JSON file, even to test something, that's exactly the habit this module is trying to prevent, use the state subcommands instead.
 - Hint 3: If your local_file resource isn't showing up in state at all, confirm you actually ran apply (not just plan) after re-creating it in step 1.
+
+## Expected Result
+terraform state list should show exactly one resource address after you apply the module 2 resource. terraform state show on that address should print the same attributes you'd see reading the raw state file, just through the proper command.

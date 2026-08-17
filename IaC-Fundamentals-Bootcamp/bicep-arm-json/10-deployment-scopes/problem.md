@@ -15,3 +15,9 @@ In solution.bicep:
 - Hint 1: targetScope has to be the very first statement in the file if you use it at all, before any param or resource declarations.
 - Hint 2: Since the resource group is created in this same file, you can point the module's scope: directly at the resource group's symbolic name rather than using the resourceGroup() function with a string name.
 - Hint 3: az deployment sub create needs a --location flag that az deployment group create doesn't, because at subscription scope there's no resource group yet to imply a region.
+
+## Expected Result
+Your file should have targetScope = 'subscription' as its literal first line. Both the resource group resource and the module block should appear in the compiled output, with the module correctly scoped to the new resource group.
+
+## Cost & Cleanup
+This module actually creates a resource group. If you ran it for real, delete it when you're done: az group delete --name <your-rg> --yes --no-wait.

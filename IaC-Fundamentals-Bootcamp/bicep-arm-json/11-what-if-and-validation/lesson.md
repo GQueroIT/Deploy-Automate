@@ -1,5 +1,7 @@
 # What-If and Validation Workflow
 
+By the end of this module, you'll be able to preview exactly what a deployment would change before you ever run it for real.
+
 ## Status
 In progress
 
@@ -44,9 +46,18 @@ Recent versions of Azure CLI (2.76.0+) and Azure PowerShell (13.4.0+) introduced
 - `az deployment group validate` — Checks a template will deploy successfully without creating anything. Example: `az deployment group validate --resource-group rg-name --template-file main.bicep`
 - `az deployment group what-if` — Shows exactly what a deployment would change, without applying anything. Example: `az deployment group what-if --resource-group rg-name --template-file main.bicep`
 
+## Troubleshooting
+
+- what-if shows a ~ (modify) on something you expected to be a fresh +. That usually means a resource with that name already exists from a previous run, what-if is telling you the truth.
+- The command errors immediately instead of showing a preview. Confirm you're using the exact same --template-file and --location flags the real deployment would need.
+
 ## Key Terms
 See GLOSSARY.md. New here: Dry run (a preview that shows what would happen without actually doing it, what-if is Bicep/ARM's version of this concept).
 
 ## Reference
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli
 - https://learn.microsoft.com/en-us/cli/azure/bicep
+
+## See Also
+
+- [Terraform module 02, Core Workflow](../../terraform/02-core-workflow/lesson.md)

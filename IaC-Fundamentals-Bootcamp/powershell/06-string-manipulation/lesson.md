@@ -1,5 +1,7 @@
 # String Manipulation and Formatting
 
+By the end of this module, you'll be able to pull apart a raw string into its pieces and rebuild a clean, formatted line from them.
+
 ## Status
 In progress
 
@@ -60,6 +62,11 @@ Status: $status
 - `.ToLower()` — String method, converts a string to all lowercase. Example: `"TEXT".ToLower()`
 - `.ToUpper()` — String method, converts a string to all uppercase. Example: `"text".ToUpper()`
 - `.Trim()` — String method, removes leading and trailing whitespace. Example: `$text.Trim()`
+
+## Troubleshooting
+
+- $line.Split(" ") gives you way more pieces than expected. A message with multiple words splits on every space, not just the first few, use the overload that takes a count limit if you only want a certain number of pieces.
+- .Substring(0, 1) throws 'index out of range'. This happens on an empty string, always confirm your string actually has content before slicing it.
 
 ## Key Terms
 See GLOSSARY.md. New here: Method (a built-in action attached to a value, called with a dot, like .ToUpper()), Format operator (-f, builds a string from a template and values), Here-string (a multi-line string block, opened with @" and closed with "@).

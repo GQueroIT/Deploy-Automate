@@ -1,5 +1,7 @@
 # Script Structure: Params Blocks, Comment-Based Help
 
+By the end of this module, you'll be able to turn a script into a properly documented, parameter-driven tool that Get-Help can read.
+
 ## Status
 In progress
 
@@ -64,6 +66,11 @@ param(
 ## Commands Used in This Lesson
 
 - `Get-Help` — Displays help and documentation for a cmdlet, function, or script. Example: `Get-Help .\script.ps1 -Full`
+
+## Troubleshooting
+
+- Get-Help .\script.ps1 -Full shows nothing useful. The comment-based help block has to be a single contiguous block with the exact .SYNOPSIS/.DESCRIPTION formatting, sitting right above or below the param block.
+- The script errors immediately with 'param is not recognized'. Something came before param() in the file, it has to be the very first real statement.
 
 ## Key Terms
 See GLOSSARY.md. New here: CmdletBinding (an attribute that upgrades a function/script to behave like a real cmdlet), Comment-based help (a structured comment block that PowerShell's help system can read).

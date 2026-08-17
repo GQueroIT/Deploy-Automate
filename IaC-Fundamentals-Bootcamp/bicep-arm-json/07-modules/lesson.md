@@ -1,5 +1,7 @@
 # Modules
 
+By the end of this module, you'll be able to break a Bicep file into a reusable module and call it with its own parameters.
+
 ## Status
 In progress
 
@@ -40,9 +42,18 @@ For sharing modules across a team or multiple projects, you can publish them to 
 
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
 
+## Troubleshooting
+
+- The module call fails saying a required parameter is missing. The module's own param() block defines what's required, check that file, not what you assume it needs.
+- You can't reference something inside the module from the calling file. You can only access what the module explicitly exposes as an output, nothing else is reachable from outside.
+
 ## Key Terms
 See GLOSSARY.md. New here: Nested deployment (a deployment operation triggered from within another deployment, which is what a module call actually is under the hood).
 
 ## Reference
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file
+
+## See Also
+
+- [Terraform module 09, Writing and Calling Modules](../../terraform/09-modules/lesson.md)

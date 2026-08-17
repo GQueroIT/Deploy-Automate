@@ -1,5 +1,7 @@
 # Data Sources
 
+By the end of this module, you'll be able to read information about a resource you don't own without Terraform trying to manage it.
+
 ## Status
 In progress
 
@@ -30,6 +32,11 @@ Just like resources, you can add count or for_each to a data block to look up mu
 
 ### A useful sanity check
 If a data source's lookup can't find anything matching what you specified, Terraform will refuse to plan and error out, that's actually a helpful behavior, it catches typos in resource group names or missing prerequisites before you get further into a broken plan.
+
+## Troubleshooting
+
+- The data source returns an error saying nothing matches. Confirm the resource you're looking up actually exists with that exact name, data sources don't create anything.
+- You accidentally wrote a resource block instead of a data block, and plan shows something being created that shouldn't be. Double-check the block type at the top.
 
 ## Key Terms
 See GLOSSARY.md. New here: Data source (read-only, Terraform looks it up but never creates, modifies, or destroys it, unlike a managed resource).

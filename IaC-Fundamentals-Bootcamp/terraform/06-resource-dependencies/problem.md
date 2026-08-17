@@ -15,3 +15,9 @@ In solution.tf:
 - Hint 1: If you accidentally hardcode the resource group name as a plain string instead of referencing the resource's attribute, the implicit dependency disappears completely, Terraform would have no way to know the two resources are related.
 - Hint 2: Storage account names have their own rules (lowercase letters and numbers only, globally unique across Azure), keep that in mind when picking a test name here, same rule as the Bicep section of this repo.
 - Hint 3: terraform plan output lists resources roughly in dependency order when there's a real relationship, that ordering itself is a clue you can use to sanity-check whether Terraform actually detected the dependency you intended.
+
+## Expected Result
+terraform plan should list the resource group before the storage account, reflecting the dependency, even though you never wrote depends_on.
+
+## Cost & Cleanup
+Storage accounts here are minimal cost, but don't leave them running, terraform destroy when you're done.

@@ -1,5 +1,7 @@
 # Files: Get-Content, Set-Content, CSV Import/Export
 
+By the end of this module, you'll be able to read and write files and CSVs, and know why everything that comes back from a CSV is a string.
+
 ## Status
 In progress
 
@@ -49,6 +51,11 @@ If you're ever unsure what type a value actually is, .GetType() tells you direct
 - `Import-Csv` — Reads a CSV file back in as PowerShell objects. Example: `Import-Csv -Path file.csv`
 - `ConvertFrom-Json` — Parses a JSON string into a PowerShell object. Example: `$json | ConvertFrom-Json`
 - `.GetType()` — Returns the underlying type of a value. Example: `$value.GetType()`
+
+## Troubleshooting
+
+- A value that looks like a number from Import-Csv won't compare correctly. Everything from CSV is a string, cast it explicitly, like [int] or [datetime], before comparing or doing math.
+- Export-Csv adds a strange first line to the file. That's a type-information header some versions add by default, -NoTypeInformation removes it.
 
 ## Key Terms
 See GLOSSARY.md. New here: CSV (comma-separated values, a plain-text table format where each line is a row and commas separate the columns).

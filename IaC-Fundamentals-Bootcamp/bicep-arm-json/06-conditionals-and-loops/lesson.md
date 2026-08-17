@@ -1,5 +1,7 @@
 # Conditionals and Loops
 
+By the end of this module, you'll be able to conditionally deploy a resource and deploy multiple copies of one from a single block.
+
 ## Status
 In progress
 
@@ -73,9 +75,18 @@ By default, looped resources deploy concurrently in a non-deterministic order. @
 - `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
 - `items()` — Bicep function, loops over the key-value pairs of an object instead of a plain array. Example: `items(myObject)`
 
+## Troubleshooting
+
+- Your for loop deploys, but every instance has the same name and only one resource actually exists afterward. You referenced the original array parameter instead of the loop variable inside the block body.
+- Combining if and for throws a syntax error. The if goes directly after the equals sign, the for goes inside the square brackets that follow it, mixing up the order breaks it.
+
 ## Key Terms
 See GLOSSARY.md. New here: Conditional deployment (a resource that only gets created if a condition is true), Iteration/Loop (deploying multiple similar resources from one block), Batch (a controlled group of loop instances deployed together).
 
 ## Reference
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops
 - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file
+
+## See Also
+
+- [Terraform module 08, count and for_each](../../terraform/08-count-and-for-each/lesson.md)

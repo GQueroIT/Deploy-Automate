@@ -15,3 +15,9 @@ Working from your module 2 or 3 storage account solution.bicep:
 - Hint 1: A resource's resource ID is available via its symbolic name's .id property, no function call needed.
 - Hint 2: The blob endpoint lives nested under .properties.primaryEndpoints.blob on a storage account resource, you'll need to drill into the property path correctly.
 - Hint 3: @secure() on an output only works for string or object typed outputs, same restriction as parameters.
+
+## Expected Result
+Compiling should produce three outputs. The first two should have plain string values, the third, your @secure() one, should show as hidden or redacted rather than the actual value.
+
+## Cost & Cleanup
+If you deployed this for real, clean up when you're done: az group delete --name <your-rg> --yes --no-wait.

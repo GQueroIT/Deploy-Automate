@@ -1,5 +1,7 @@
 # Control Flow: If/Else, Switch, Loops
 
+By the end of this module, you'll be able to branch logic with if/elseif/else or switch, and loop over a list of items with foreach.
+
 ## Status
 In progress
 
@@ -71,6 +73,11 @@ break exits a loop immediately. continue skips to the next iteration.
 ## Commands Used in This Lesson
 
 - `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
+
+## Troubleshooting
+
+- if ($status == "Down") throws an error. PowerShell doesn't use ==, use -eq instead.
+- A switch statement runs every matching block, not just the first one. If you expected 'first match wins' like some other languages, that's not how PowerShell's switch behaves by default.
 
 ## Key Terms
 See GLOSSARY.md. New here: Boolean, Operator, Loop, Iteration. A Boolean is a value that's only ever true or false, like $isResolved from module 1. An Operator is a symbol or keyword (like -eq) that compares or combines values. A Loop repeats a block of code. Each single pass through a loop is one Iteration.

@@ -1221,14 +1221,140 @@ def commands_used_section(lesson_text: str) -> str:
     lines.append("")
     return "\n".join(lines) + "\n"
 
+
+# --- Per-module enhancements (outcomes, troubleshooting, expected results, cost/cleanup, cross-links) ---
+
+OUTCOMES = {
+"01-iac-concepts-and-providers": "By the end of this module, you'll be able to declare which provider a Terraform configuration needs and configure it correctly, including the quirks that trip up a first init.",
+"02-core-workflow": "By the end of this module, you'll be able to run the full init, plan, apply, destroy cycle and actually read what each step is telling you.",
+"03-variables-and-outputs": "By the end of this module, you'll be able to write validated input variables and expose outputs, and supply values through a tfvars file instead of hardcoding them.",
+"04-state": "By the end of this module, you'll be able to explain what Terraform state actually is, and inspect it safely with the proper commands instead of hand-editing the file.",
+"05-azurerm-provider": "By the end of this module, you'll be able to authenticate to Azure and declare your first real azurerm resource.",
+"06-resource-dependencies": "By the end of this module, you'll be able to create a real dependency between two resources just by referencing an attribute, with zero depends_on.",
+"07-data-sources": "By the end of this module, you'll be able to read information about a resource you don't own without Terraform trying to manage it.",
+"08-count-and-for-each": "By the end of this module, you'll be able to choose correctly between count and for_each, and explain why the choice actually matters, not just which syntax to use.",
+"09-modules": "By the end of this module, you'll be able to package resources into a reusable child module and call it more than once with different inputs.",
+"10-remote-state-basics": "By the end of this module, you'll be able to migrate a configuration from local state to a remote backend.",
+"11-lifecycle-blocks": "By the end of this module, you'll be able to protect a critical resource from accidental destruction and control replacement behavior.",
+"12-plan-output-and-state-commands": "By the end of this module, you'll be able to read plan output correctly and fix a state mismatch without destroying and recreating something that didn't need to change.",
+}
+
+TROUBLESHOOTING = {
+"01-iac-concepts-and-providers": [
+ "terraform init fails immediately after adding the provider block. Recent azurerm versions require the features {} block even empty, missing it is the single most common first-run error.",
+ "init downloads a newer provider version than you expected. You didn't pin a version constraint, or pinned it too loosely, tighten the version argument in required_providers.",
+],
+"02-core-workflow": [
+ "terraform apply asks for confirmation but nothing seems to happen after you respond. Confirm you typed the full word 'yes', not 'y', Terraform requires the exact word by default.",
+ "terraform destroy fails saying resources aren't found. You may have already destroyed them in a previous run, or you're in the wrong working directory, confirm with terraform state list first.",
+],
+"03-variables-and-outputs": [
+ "Your validation rule doesn't trigger even on an obviously bad value. Double-check the regex inside can(regex(...)), a small mistake there can make the check always pass.",
+ "plan doesn't pick up your dev.tfvars file. -var-file has to be passed explicitly on the command line, only a file literally named terraform.tfvars loads automatically.",
+],
+"04-state": [
+ "terraform state show says the resource doesn't exist even though you just applied it. Run terraform state list first to get the exact address, it's easy to guess wrong.",
+ "You're tempted to fix something by editing terraform.tfstate directly. Don't, use the specific state subcommand for what you're trying to do, a bad hand-edit can corrupt state Terraform can't recover from.",
+],
+"05-azurerm-provider": [
+ "terraform plan fails with an authentication error. Run az login again, CLI sessions expire, and azurerm depends on that session being valid.",
+ "Resources plan against the wrong subscription. Check az account show and az account set --subscription if you have access to more than one.",
+],
+"06-resource-dependencies": [
+ "The dependency doesn't show up correctly in plan even though you referenced an attribute. Confirm you're referencing the actual resource attribute, not a hardcoded copy of the same string that happens to match.",
+ "Changing the resource group triggers unrelated changes elsewhere. That's the dependency graph working correctly, a real upstream change should ripple to anything that depends on it.",
+],
+"07-data-sources": [
+ "The data source returns an error saying nothing matches. Confirm the resource you're looking up actually exists with that exact name, data sources don't create anything.",
+ "You accidentally wrote a resource block instead of a data block, and plan shows something being created that shouldn't be. Double-check the block type at the top.",
+],
+"08-count-and-for-each": [
+ "for_each throws an error about needing a map or set. A plain list doesn't work directly, wrap it in toset() first.",
+ "Removing a middle item from a count-based list causes an unexpected destroy/recreate on an item you didn't touch. That's the exact index-shift problem this lesson covers, for_each avoids it.",
+],
+"09-modules": [
+ "Calling the module a second time reuses the same resource names and collides. Each module call needs distinct input values, not just a distinct local name for the call itself.",
+ "A variable you expect the child module to see isn't available inside it. Nothing is implicitly shared, every value the module needs has to be explicitly passed in.",
+],
+"10-remote-state-basics": [
+ "terraform init after adding the cloud {} block doesn't offer to migrate your state. Confirm the block is formatted correctly and that you're logged in with terraform login first.",
+ "terraform login opens a browser but nothing happens afterward. This is separate from az login, confirm you're completing the HCP Terraform authentication flow, not your Azure one.",
+],
+"11-lifecycle-blocks": [
+ "terraform destroy on a protected resource fails with an unhelpful-looking error. Read it carefully, it names the exact resource and setting blocking it, that's prevent_destroy doing its job.",
+ "You removed the whole resource block to get around prevent_destroy and now Terraform wants to destroy it for real. Expected, the protection only exists while the block does, remove just the setting first, apply, then destroy.",
+],
+"12-plan-output-and-state-commands": [
+ "terraform state mv fails saying the source address doesn't exist. Run terraform state list first and copy the address exactly as shown.",
+ "After the state mv, plan still shows a change. Confirm you moved to the exact new address your renamed resource block actually uses, a small typo will still show as a mismatch.",
+],
+}
+
+EXPECTED_RESULTS = {
+"01-iac-concepts-and-providers": "terraform validate should pass with no errors once your provider block includes the features {} argument. You shouldn't need internet access or real Azure credentials for this module, it's structure only.",
+"02-core-workflow": "terraform plan should show exactly 1 to add before apply. After apply, the file should actually exist on disk. After destroy, terraform state list should show nothing.",
+"03-variables-and-outputs": "Running plan with a resource_group_name that doesn't start with 'rg-' should fail immediately with your custom error message. Using dev.tfvars should let plan succeed without you typing the value manually.",
+"04-state": "terraform state list should show exactly one resource address after you apply the module 2 resource. terraform state show on that address should print the same attributes you'd see reading the raw state file, just through the proper command.",
+"05-azurerm-provider": "terraform plan should show exactly 1 resource to add, the resource group, and nothing else. az account show should confirm you're authenticated against the subscription you expect.",
+"06-resource-dependencies": "terraform plan should list the resource group before the storage account, reflecting the dependency, even though you never wrote depends_on.",
+"07-data-sources": "terraform plan should show zero changes to the resource group the data source looked up, only the new storage account should show as something to create.",
+"08-count-and-for-each": "Removing the middle item from your count-based list should show plan wanting to destroy and recreate at least one resource you didn't intend to touch. The for_each version, with the same removal, should show only that one item affected.",
+"09-modules": "Calling your module twice with two different name prefixes should result in terraform plan showing two full sets of resources, distinct from each other, not a collision or duplicate-name error.",
+"10-remote-state-basics": "After init with the cloud block added, your state should be visible in the HCP Terraform workspace dashboard in the browser, not just locally anymore.",
+"11-lifecycle-blocks": "terraform destroy on the protected resource should fail with an error naming prevent_destroy specifically. After removing the setting and applying that change, destroy should succeed.",
+"12-plan-output-and-state-commands": "After your state mv, running terraform plan again should show 'No changes.' exactly, not a pending destroy/recreate.",
+}
+
+COST_CLEANUP = {
+"05-azurerm-provider": "A resource group by itself is free, but get in the habit now: run terraform destroy when you're done experimenting with each module so nothing lingers.",
+"06-resource-dependencies": "Storage accounts here are minimal cost, but don't leave them running, terraform destroy when you're done.",
+"07-data-sources": "The data source itself costs nothing, it only reads. If you created a real storage account alongside it, terraform destroy when you're done.",
+"08-count-and-for-each": "Storage accounts here are minimal cost, but don't leave three or six sitting around, terraform destroy when you're done comparing the two versions.",
+"09-modules": "Two full environments means double the resources. terraform destroy tears down everything the root configuration manages in one command.",
+"11-lifecycle-blocks": "This module is specifically about protecting a resource from deletion, that's the point, but don't forget to actually destroy it through the proper two-step process once you're fully done with the exercise.",
+"12-plan-output-and-state-commands": "Once your state matches your configuration again, terraform destroy when you're fully done with this resource.",
+}
+
+SEE_ALSO = {
+"02-core-workflow": [("Bicep module 11, What-If and Validation Workflow", "../../bicep-arm-json/11-what-if-and-validation/lesson.md")],
+"03-variables-and-outputs": [("Bicep module 03, Parameters and Variables", "../../bicep-arm-json/03-parameters-and-variables/lesson.md")],
+"04-state": [("Bicep/ARM/JSON module 01, ARM JSON Anatomy", "../../bicep-arm-json/01-arm-json-anatomy/lesson.md")],
+"05-azurerm-provider": [("PowerShell module 11, Az PowerShell Module Basics", "../../powershell/11-az-powershell-basics/lesson.md")],
+"06-resource-dependencies": [("Bicep module 08, Dependencies: Implicit vs Explicit", "../../bicep-arm-json/08-dependencies/lesson.md")],
+"08-count-and-for-each": [("Bicep module 06, Conditionals and Loops", "../../bicep-arm-json/06-conditionals-and-loops/lesson.md")],
+"09-modules": [("Bicep module 07, Modules", "../../bicep-arm-json/07-modules/lesson.md")],
+}
+
 def write_module(section_path: Path, slug: str, content: dict):
     module_path = section_path / slug
     module_path.mkdir(parents=True, exist_ok=True)
-    lesson_with_commands = content["lesson"].replace(
-        "## Key Terms", commands_used_section(content["lesson"]) + "## Key Terms", 1
-    )
-    (module_path / "lesson.md").write_text(make_interactive(lesson_with_commands))
-    (module_path / "problem.md").write_text(content["problem"])
+
+    lesson_text = content["lesson"]
+
+    if slug in OUTCOMES:
+        title_end = lesson_text.index("\n")
+        lesson_text = lesson_text[:title_end] + "\n\n" + OUTCOMES[slug] + lesson_text[title_end:]
+
+    insert_block = commands_used_section(content["lesson"])
+    if slug in TROUBLESHOOTING:
+        items = "\n".join(f"- {item}" for item in TROUBLESHOOTING[slug])
+        insert_block += "## Troubleshooting\n\n" + items + "\n\n"
+    lesson_text = lesson_text.replace("## Key Terms", insert_block + "## Key Terms", 1)
+
+    if slug in SEE_ALSO:
+        lines = ["## See Also", ""]
+        for label, rel_path in SEE_ALSO[slug]:
+            lines.append(f"- [{label}]({rel_path})")
+        lesson_text = lesson_text.rstrip("\n") + "\n\n" + "\n".join(lines) + "\n"
+
+    (module_path / "lesson.md").write_text(make_interactive(lesson_text))
+
+    problem_text = content["problem"]
+    if slug in EXPECTED_RESULTS:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Expected Result\n" + EXPECTED_RESULTS[slug] + "\n"
+    if slug in COST_CLEANUP:
+        problem_text = problem_text.rstrip("\n") + "\n\n## Cost & Cleanup\n" + COST_CLEANUP[slug] + "\n"
+    (module_path / "problem.md").write_text(problem_text)
 
 def build():
     base = Path(REPO_NAME)
