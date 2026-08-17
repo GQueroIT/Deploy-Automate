@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What lifecycle controls
 lifecycle {} is a nested block inside any resource that customizes how Terraform handles that specific resource's create, update, and destroy behavior, overriding Terraform's normal default handling.
 
@@ -19,6 +21,10 @@ resource "azurerm_storage_account" "example" {
   }
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 ### prevent_destroy
 prevent_destroy = true makes Terraform refuse to destroy that resource, erroring out instead of proceeding. Genuinely useful for anything where accidental deletion would be a serious problem, a production database, an encryption key, a DNS zone.

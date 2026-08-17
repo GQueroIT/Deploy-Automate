@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Basic syntax
 output <name> <type> = <value>
 
@@ -15,6 +17,10 @@ output storageAccountId string = storageAccount.id
 output blobEndpoint string = storageAccount.properties.primaryEndpoints.blob
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
+
 Referencing a resource's symbolic name with .id or drilling into its .properties gives you access to values Azure generates or assigns at deploy time, values you couldn't have known before deployment.
 
 ### Secure outputs
@@ -24,6 +30,10 @@ With recent Bicep versions, you can mark string or object outputs with @secure()
 @secure()
 output generatedPassword string = someSecretValue
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 ### Why this is a real gotcha
 Outputs are visible in deployment history by default. If you output something sensitive without marking it @secure(), that value sits there in plain text in your deployment history for anyone with read access to see. This is an easy way to accidentally leak a secret even when you were careful about the parameter itself.

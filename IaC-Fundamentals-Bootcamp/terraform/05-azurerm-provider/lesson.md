@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What it is
 azurerm is HashiCorp's officially maintained provider for Azure, published on the Terraform Registry under the hashicorp/azurerm namespace. It's what actually translates your resource "azurerm_..." blocks into real Azure API calls.
 

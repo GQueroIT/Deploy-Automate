@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### The core purpose
 Terraform state's primary job is storing the binding between a resource block in your configuration and the actual real-world object it corresponds to. When Terraform creates something, it records that object's identity against the specific resource instance in your code, so it knows what to update or destroy later when your configuration changes.
 

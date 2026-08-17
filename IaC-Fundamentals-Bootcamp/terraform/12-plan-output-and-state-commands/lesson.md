@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### The symbols in plan output
 - + create
 - - destroy
@@ -20,12 +22,20 @@ Lists every resource address currently tracked in state, the starting point when
 ```
 terraform state show azurerm_storage_account.example
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above yourself and try running or reasoning through it before reading on.
+
 Prints the full set of attributes Terraform has recorded for one specific resource, straight from state, without touching real infrastructure.
 
 ### terraform state mv
 ```
 terraform state mv azurerm_storage_account.example azurerm_storage_account.baseline
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above yourself and try running or reasoning through it before reading on.
+
 Renames or moves a resource's tracked address in state without destroying and recreating the real underlying object. This matters after any kind of refactor, renaming a resource block, moving a resource into a module, because without it, Terraform sees the old address disappear and a "new" resource appear at the new address, and plans to destroy the old one and create a new one, even though nothing about the real infrastructure needed to change at all.
 
 Takes the OLD address first, then the NEW address, in that order.

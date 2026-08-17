@@ -33,6 +33,30 @@ $isResolved = $false
 
 That's it. No int ticketCount = 12;, no upfront declaration. This is called being dynamically typed, and it's one of the first things that trips people up coming from a language that forces you to declare types.
 
+### Putting a variable inside a bigger string
+You'll need this for the problem below, so it's worth covering now instead of waiting. Double-quoted strings don't just hold variables, they can have a variable's value dropped directly inside them. This is called string interpolation:
+
+```powershell
+$firstName = "Gabe"
+"Hello, $firstName"    # outputs: Hello, Gabe
+```
+
+PowerShell sees the $firstName inside the double-quoted string and swaps in its value automatically. This only works with double quotes. The same line with single quotes, 'Hello, $firstName', prints the literal text $firstName, dollar sign and all, because single quotes never interpolate.
+
+### Two string methods you'll need for this module's problem
+The full lesson on string manipulation is module 6, but the problem below needs two small pieces of it now, so here they are early:
+
+- .ToLower() converts a string to all lowercase: "SMITH".ToLower() gives you "smith".
+- .Substring(start, length) pulls out part of a string by position, counting from 0: "Gabe".Substring(0, 1) gives you "G", the first character.
+
+Both are called directly on a string or a variable holding one, with a dot, no separate cmdlet needed:
+
+```powershell
+$firstName = "Gabe"
+$firstInitial = $firstName.Substring(0, 1)   # "G"
+$lowered = $firstName.ToLower()               # "gabe"
+```
+
 ### Automatic and preference variables
 PowerShell also comes with variables it creates and manages for you. Automatic variables like $_ (the current object in a pipeline) or $PSHOME (the install path) store state PowerShell itself needs, and by convention you don't overwrite them even though technically you could. Preference variables like $ErrorActionPreference control how PowerShell behaves and you can change those on purpose. You don't need to memorize the full list right now, just know these two categories exist and that a $ doesn't always mean "a value I made up."
 
@@ -317,6 +341,15 @@ Get-Process | Where-Object { $_.WorkingSet -gt 100MB }
 
 This keeps only processes using more than 100MB of memory. Everything else gets filtered out before it reaches the next cmdlet in the pipeline.
 
+### Finding property names with Get-Member
+Before you can filter or sort by a property, you need to know it exists and what it's actually called. Get-Member lists every property and method attached to whatever object comes through the pipeline:
+
+```powershell
+Get-Process | Get-Member
+```
+
+This is how you confirm a property name instead of guessing at it, run it once, scan the list, then use the exact name you find in your Where-Object or Sort-Object.
+
 ### Sort-Object: ordering
 Sorts objects by a property. Add -Descending to flip the order.
 
@@ -545,6 +578,8 @@ $imported | Where-Object { $_.Department -eq "IT" }
 ### The gotcha worth knowing up front
 Everything that comes back from Import-Csv is a string, even things that look like numbers or dates. If you exported a StartDate as a real date, re-importing it gives you back the text representation of that date, not an actual date object. If you need to compare or sort by it as a real date afterward, you'll need to convert it back explicitly with something like [datetime]$row.StartDate.
 
+If you're ever unsure what type a value actually is, .GetType() tells you directly: $row.StartDate.GetType() prints the underlying type, useful for confirming a suspicion instead of guessing at why a comparison isn't working.
+
 ## Key Terms
 See GLOSSARY.md. New here: CSV (comma-separated values, a plain-text table format where each line is a row and commas separate the columns).
 
@@ -755,6 +790,21 @@ Set-AzContext -Subscription "name-or-id"   # switch to a specific one
 
 Running a command against the wrong subscription because nobody checked context first is a genuinely common real-world mistake, get in the habit of checking it early in any script that touches Azure.
 
+### Listing resources and formatting the output
+Once connected, Az cmdlets follow the same Verb-Noun pattern as everything else, and the same pipeline concepts from earlier modules apply directly:
+
+```powershell
+Get-AzResourceGroup
+```
+
+This returns one object per resource group in your current subscription, with properties like ResourceGroupName and Location, exactly like any other PowerShell object. To display just specific properties as a clean table instead of the full default output, pipe it into Format-Table:
+
+```powershell
+Get-AzResourceGroup | Format-Table -Property ResourceGroupName, Location
+```
+
+Format-Table doesn't change the underlying objects, it only changes how they're displayed on screen. If you tried to capture this into a variable and use it further down a pipeline, you'd get formatted display text back, not usable objects, which is why formatting cmdlets like this one are usually the last thing in a pipeline, not the middle.
+
 ## Key Terms
 See GLOSSARY.md. New here: Authentication (proving who you are to Azure before it lets you do anything), Context (which subscription/tenant your current session is currently pointed at).
 
@@ -958,6 +1008,7 @@ def scaffold(base: Path):
     call even after other sections have already been populated for real."""
     base.mkdir(exist_ok=True)
     _write_if_missing(base / "GLOSSARY.md", GLOSSARY_CONTENT)
+    _write_if_missing(base / "ENVIRONMENT-SETUP.md", ENVIRONMENT_SETUP_CONTENT)
 
     readme_lines = [
         "# IaC Fundamentals Bootcamp",
@@ -982,10 +1033,193 @@ def scaffold(base: Path):
         readme_lines.append("")
     _write_if_missing(base / "README.md", "\n".join(readme_lines))
 
+# --- Environment setup (written once at repo root, alongside README/GLOSSARY) ---
+
+ENVIRONMENT_SETUP_CONTENT = """# Environment Setup
+
+This assumes nothing is installed yet. Do this once, in order, before starting module 1 of any section. Both Windows and RHEL/Linux are covered in full for every tool, pick whichever machine you're on, both work equally well for everything in this repo.
+
+## If a Microsoft package install has failed on RHEL before
+Every Microsoft Linux tool below has a way to install as a single downloaded file, no repository registration step at all. Where that applies, it's called out explicitly, use that path first if the dnf-repo method has given you trouble before.
+
+## PowerShell 7
+
+**Windows (winget):**
+```powershell
+winget install --id Microsoft.PowerShell --source winget
+```
+Installs the current PowerShell 7 release side by side with the built-in Windows PowerShell 5.1, both can coexist.
+
+**RHEL / Linux, Option A, single RPM, no repo registration (start here if you've had trouble before):**
+```bash
+sudo dnf install https://github.com/PowerShell/PowerShell/releases/download/v7.6.5/powershell-7.6.5-1.rh.x86_64.rpm
+```
+Installs directly from one downloaded package. Does not register Microsoft's repository on your system, nothing for subscription-manager to conflict with.
+
+**RHEL / Linux, Option B, tar.gz binary, no root required:**
+```bash
+curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.6.5/powershell-7.6.5-linux-x64.tar.gz
+mkdir -p ~/powershell
+tar -xzf /tmp/powershell.tar.gz -C ~/powershell
+~/powershell/pwsh
+```
+Unpacks into your own home directory. Nothing system-wide, nothing to register, works without sudo.
+
+**RHEL / Linux, Option C, Microsoft's package repository (registers a new repo, most likely to hit prior friction):**
+```bash
+source /etc/os-release
+curl -sSL -O https://packages.microsoft.com/config/rhel/$VERSION_ID/packages-microsoft-prod.rpm
+sudo rpm -i packages-microsoft-prod.rpm
+sudo dnf install powershell -y
+```
+Microsoft's documented preferred method, and the one that registers a full repo, the exact step that's caused registration problems before. Use A or B instead if this fails.
+
+**Verify (either OS):** `pwsh --version`
+
+## Azure CLI
+Needed for PowerShell module 11, and for every deployment in the Bicep/ARM/JSON section.
+
+**Windows (winget):**
+```powershell
+winget install --exact --id Microsoft.AzureCLI
+```
+
+**Windows (MSI, alternative):**
+Download and run the installer from `https://aka.ms/installazurecliwindows`, close and reopen your terminal afterward.
+
+**RHEL / Linux, Option A, universal install script:**
+```bash
+curl -L https://aka.ms/InstallAzureCli | bash
+```
+Detects your distro and installs without you manually configuring a repo.
+
+**RHEL / Linux, Option B, dnf with Microsoft's repo (same registration step as PowerShell Option C above):**
+```bash
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo dnf install -y https://packages.microsoft.com/config/rhel/$(source /etc/os-release; echo $VERSION_ID)/packages-microsoft-prod.rpm
+sudo dnf install azure-cli
+```
+
+**Either OS, Option C, Azure Cloud Shell, zero install:**
+portal.azure.com has a Cloud Shell icon in the top bar, a browser-based terminal with Azure CLI, Bicep, and PowerShell already installed. Nothing local to configure, a good fallback while sorting out a local install.
+
+**Verify (either OS):** `az --version`
+**Sign in (either OS):** `az login`
+
+## Bicep CLI
+Usually nothing to install separately on either OS. Azure CLI 2.20.0+ installs its own self-contained Bicep CLI automatically the first time you run a command that needs it.
+```bash
+az bicep version
+```
+If it's missing:
+```bash
+az bicep install
+```
+
+**Windows (winget), standalone install:**
+```powershell
+winget install --exact --id Microsoft.Bicep
+```
+
+**RHEL / Linux, standalone binary:**
+```bash
+curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+chmod +x ./bicep
+sudo mv ./bicep /usr/local/bin/bicep
+bicep --help
+```
+A standalone install is only needed if you're using Bicep from somewhere that doesn't already carry Azure CLI's copy, like a from a script that calls `bicep` directly instead of `az bicep`.
+
+## Terraform
+
+**Windows (winget):**
+```powershell
+winget install --id Hashicorp.Terraform --exact
+```
+
+**RHEL / Linux, HashiCorp's own repository (separate from Microsoft's, hasn't been a source of the friction you've hit before):**
+```bash
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+sudo dnf install terraform
+```
+
+**Verify (either OS):** `terraform version`
+
+## VS Code extensions
+Same three extensions, same names, on both machines. Install from the Extensions panel (Ctrl+Shift+X), search each by name:
+- **PowerShell** (by Microsoft), syntax highlighting, IntelliSense, run .ps1 files directly from the editor.
+- **Bicep** (by Microsoft), syntax highlighting, autocomplete, inline validation for .bicep files.
+- **HashiCorp Terraform** (by HashiCorp), syntax highlighting and autocomplete for .tf files.
+
+## Quick sanity check
+Run on whichever machine you're currently on:
+```bash
+pwsh --version
+az --version
+az bicep version
+terraform version
+```
+All four returning a version number with no errors means that machine is ready for module 1 of any section. Run the same check on the other machine whenever you switch to it, don't assume both stay in sync automatically.
+
+## Reference
+- https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows
+- https://learn.microsoft.com/en-us/powershell/scripting/install/install-rhel
+- https://learn.microsoft.com/en-us/powershell/scripting/install/alternate-install-methods
+- https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows
+- https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux
+- https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install
+- https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+"""
+
+
+# --- Interactive lesson transformation ---
+# Applied to every lesson.md at write time. Finds each fenced code block and
+# inserts a hands-on checkpoint right after it, so the lesson itself is
+# practiced as you read it, not just read and then practiced later in the
+# problem. Doesn't require touching the 35 lesson strings by hand, it's a
+# consistent transformation applied uniformly across every module.
+
+import re as _re
+
+_CHECKPOINT_TEMPLATES = {
+    "powershell": "Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.",
+    "json": "Type the code above into a scratch file (try.json) yourself rather than copy-pasting it. Read back through it and confirm you can name what each part is doing before moving on.",
+    "bicep": "Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.",
+    "hcl": "Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.",
+    "bash": "Run the command above yourself in your terminal before reading on, don't just read what it's supposed to do.",
+}
+_DEFAULT_CHECKPOINT = "Type the code above yourself and try running or reasoning through it before reading on."
+
+_CODE_BLOCK_PATTERN = _re.compile(r'(```([a-zA-Z]*)\n.*?```)', _re.DOTALL)
+
+def make_interactive(lesson_text: str) -> str:
+    counter = {"n": 0}
+
+    def _replacer(match: "_re.Match") -> str:
+        counter["n"] += 1
+        block = match.group(1)
+        lang = match.group(2).lower()
+        instruction = _CHECKPOINT_TEMPLATES.get(lang, _DEFAULT_CHECKPOINT)
+        checkpoint = f"\n\n> **Try it now, Checkpoint {counter['n']}**\n> {instruction}\n"
+        return block + checkpoint
+
+    result = _CODE_BLOCK_PATTERN.sub(_replacer, lesson_text)
+
+    intro_note = (
+        "## Lesson\n\n"
+        "*This lesson is interactive. Complete each numbered checkpoint as you reach it, "
+        "don't read past it and come back later, the point is building the muscle memory "
+        "while the concept is still right in front of you.*\n"
+    )
+    result = result.replace("## Lesson\n", intro_note, 1)
+
+    return result
+
 def write_module(section_path: Path, slug: str, content: dict):
     module_path = section_path / slug
     module_path.mkdir(parents=True, exist_ok=True)
-    (module_path / "lesson.md").write_text(content["lesson"])
+    (module_path / "lesson.md").write_text(make_interactive(content["lesson"]))
     (module_path / "problem.md").write_text(content["problem"])
 
 def build():

@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Defining a function
 A function is a named, reusable block of code. PowerShell's naming convention is Verb-Noun, matching the built-in cmdlets, so your own functions blend in and are predictable to read (Get-DiskStatus, not CheckDisk or diskStuff).
 
@@ -20,6 +22,10 @@ function Get-DiskStatus {
 }
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
 ### The param() block
 Parameters go inside param(), each with a type and optionally a default value. A parameter with a default value is optional to supply when calling the function, exactly like a Bicep parameter with a defaultValue from the other section of this repo. Without a default, PowerShell will actually prompt the person running the script to type a value in interactively, which is rarely what you want, so give sensible defaults or mark it [Parameter(Mandatory)] if you genuinely need to force the caller to supply it.
 
@@ -32,6 +38,10 @@ function Add-Numbers {
     $A + $B   # this becomes the return value, no "return" needed
 }
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 ### Scope
 A variable created inside a function only exists inside that function by default, this is local scope. Once the function finishes, that variable is gone, it doesn't leak out and overwrite a variable of the same name outside the function. If you genuinely need a function to change something outside itself, you can reach into $global:variableName, but that's the exception, not the default behavior, and it makes code harder to reason about.

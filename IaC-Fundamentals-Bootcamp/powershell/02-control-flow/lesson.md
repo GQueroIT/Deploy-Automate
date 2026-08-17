@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Comparison operators are not what you're used to
 PowerShell does not use ==, !=, >, or < for comparisons. It uses word-based operators instead:
 
@@ -17,6 +19,10 @@ if ($status -eq "Down") {
     Write-Host "Needs attention"
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 This trips up everyone coming from another language at first. -eq is not a typo, it's the actual operator.
 
@@ -33,6 +39,10 @@ if ($status -eq "Down") {
 }
 ```
 
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
 ### switch
 When you've got more than two or three elseif branches checking the same variable, switch is cleaner:
 
@@ -43,6 +53,10 @@ switch ($status) {
     default    { Write-Host "OK" }
 }
 ```
+
+> **Try it now, Checkpoint 3**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 switch can also match wildcards (-Wildcard) or regular expressions (-Regex), and it can evaluate directly against an array, running once per matching item.
 

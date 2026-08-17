@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Parameter syntax and decorators
 @<decorator>(<argument>)
 param <parameter-name> <parameter-data-type> = <default-value>
@@ -24,6 +26,10 @@ param environment string = 'dev'
 param adminPassword string
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
+
 Bicep allows a maximum of 256 parameters per file, and parameter names can only contain letters, digits, and underscores (no periods, unlike ARM JSON).
 
 ### Variables
@@ -33,6 +39,10 @@ var <variable-name> = <variable-value>, type is usually inferred from the value 
 var resourcePrefix = 'app'
 var instanceCount = environment == 'prod' ? 5 : 2
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 That ternary (condition ? valueIfTrue : valueIfFalse) is a common pattern for computing a variable based on a parameter.
 

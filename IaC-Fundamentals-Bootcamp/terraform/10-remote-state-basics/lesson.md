@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Why local state stops being enough
 Local state, what you've used through every module so far, works fine solo. It breaks down the moment more than one person needs to run Terraform against the same infrastructure: two people applying against the same local state file at the same time can conflict or corrupt it, and state can contain secrets in plain text sitting on someone's individual laptop, which is a real security problem the moment more than one person is involved.
 
@@ -21,6 +23,10 @@ terraform {
   }
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 You'll also need to run terraform login once to authenticate the CLI itself against HCP Terraform, that's a separate login from your Azure authentication.
 

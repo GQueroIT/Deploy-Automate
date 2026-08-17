@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### az deployment group validate
 Checks that your template will deploy successfully without actually creating anything, a syntax-and-schema level check. Good as a fast first pass, but it doesn't tell you what would actually change in your environment.
 
@@ -15,6 +17,10 @@ az deployment group validate \
   --parameters @params.json
 ```
 
+> **Try it now, Checkpoint 1**
+> Run the command above yourself in your terminal before reading on, don't just read what it's supposed to do.
+
+
 ### az deployment group what-if
 Goes further than validate: it shows you exactly what would happen, which resources would be created, modified, or deleted, and which specific properties would change, without applying anything. This is your actual safety net before running a deployment against an environment that already has real resources in it.
 
@@ -23,6 +29,10 @@ az deployment group what-if \
   --resource-group myResourceGroup \
   --template-file main.bicep
 ```
+
+> **Try it now, Checkpoint 2**
+> Run the command above yourself in your terminal before reading on, don't just read what it's supposed to do.
+
 
 Reading what-if output: + means create, - means delete, ~ means modify in place. Anything you didn't expect to see change is exactly what you want to catch here, before you type yes on a real deployment.
 

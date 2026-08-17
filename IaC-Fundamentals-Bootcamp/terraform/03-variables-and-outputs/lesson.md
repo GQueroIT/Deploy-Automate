@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Input variables
 A variable block defines a named input your configuration accepts, keeping values out of hardcoded resource blocks so the same configuration can be reused with different inputs.
 
@@ -20,6 +22,10 @@ variable "resource_group_name" {
 }
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
+
 Reference it elsewhere in your configuration with var.resource_group_name. The validation block enforces a rule at plan time, using a condition expression (often built with the can() function wrapping something that would otherwise error, like a regex match) and a custom error_message shown when it fails.
 
 ### Output values
@@ -32,6 +38,10 @@ output "storage_account_name" {
 }
 ```
 
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
+
 Add sensitive = true to an output (or a variable) to keep its value out of normal CLI output, similar in spirit to Bicep's @secure() decorator from the other section of this repo.
 
 ### .tfvars files
@@ -40,6 +50,10 @@ Rather than hardcoding variable values or typing them at every plan/apply, you c
 ```
 terraform plan -var-file="dev.tfvars"
 ```
+
+> **Try it now, Checkpoint 3**
+> Type the code above yourself and try running or reasoning through it before reading on.
+
 
 This is the standard way to keep per-environment values (dev.tfvars, prod.tfvars) out of your core .tf files entirely.
 

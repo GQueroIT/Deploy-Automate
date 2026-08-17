@@ -5,17 +5,19 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### The three-step core loop
-1. terraform init â€” prepares your working directory. Downloads the providers declared in required_providers, sets up the local .terraform folder. You have to run this again whenever you change which providers a configuration requires.
-2. terraform plan â€” compares your configuration against current state and the real infrastructure, and shows exactly what would change, create, update, or destroy, without touching anything. This is the safety net, read it before you ever type yes.
-3. terraform apply â€” runs a fresh plan and asks you to confirm before executing it. You can also feed it a saved plan file from terraform plan -out=tfplan, useful in CI so what gets applied is exactly, byte-for-byte, what a human already reviewed.
+1. terraform init — prepares your working directory. Downloads the providers declared in required_providers, sets up the local .terraform folder. You have to run this again whenever you change which providers a configuration requires.
+2. terraform plan — compares your configuration against current state and the real infrastructure, and shows exactly what would change, create, update, or destroy, without touching anything. This is the safety net, read it before you ever type yes.
+3. terraform apply — runs a fresh plan and asks you to confirm before executing it. You can also feed it a saved plan file from terraform plan -out=tfplan, useful in CI so what gets applied is exactly, byte-for-byte, what a human already reviewed.
 
 ### terraform destroy
 Tears down every resource the current configuration manages, using state to know what's real. Also asks for confirmation first, just like apply. Under the hood, terraform destroy is really just an alias for terraform apply -destroy.
 
 ### Two habits worth building now
-- terraform fmt â€” reformats your files to a consistent style automatically.
-- terraform validate â€” checks syntax and internal consistency without needing any provider credentials or touching real infrastructure.
+- terraform fmt — reformats your files to a consistent style automatically.
+- terraform validate — checks syntax and internal consistency without needing any provider credentials or touching real infrastructure.
 
 Running both before every plan catches dumb mistakes early and keeps your files readable.
 

@@ -5,12 +5,18 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Az, not AzureRM
 The Az module is the current, actively maintained PowerShell module for managing Azure resources. There's an older module called AzureRM that's now legacy, Microsoft's own guidance is that Az and AzureRM should not be installed side by side on the same system, they define overlapping cmdlets and will conflict. If you're setting this up fresh, you only want Az.
 
 ```powershell
 Install-Module -Name Az -Repository PSGallery -Force
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 Keep it current later with Update-Module -Name Az -Force.
 
@@ -21,6 +27,10 @@ Connect-AzAccount opens a browser window for interactive sign-in (with MFA suppo
 Connect-AzAccount
 ```
 
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
 ### Checking and setting context
 Once connected, if your account has access to more than one subscription, PowerShell picks one as the "current context" and every command runs against that subscription until you change it. Always verify before running anything that creates or modifies resources:
 
@@ -30,7 +40,34 @@ Get-AzContext -ListAvailable       # what subscriptions do I have access to?
 Set-AzContext -Subscription "name-or-id"   # switch to a specific one
 ```
 
+> **Try it now, Checkpoint 3**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
 Running a command against the wrong subscription because nobody checked context first is a genuinely common real-world mistake, get in the habit of checking it early in any script that touches Azure.
+
+### Listing resources and formatting the output
+Once connected, Az cmdlets follow the same Verb-Noun pattern as everything else, and the same pipeline concepts from earlier modules apply directly:
+
+```powershell
+Get-AzResourceGroup
+```
+
+> **Try it now, Checkpoint 4**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
+This returns one object per resource group in your current subscription, with properties like ResourceGroupName and Location, exactly like any other PowerShell object. To display just specific properties as a clean table instead of the full default output, pipe it into Format-Table:
+
+```powershell
+Get-AzResourceGroup | Format-Table -Property ResourceGroupName, Location
+```
+
+> **Try it now, Checkpoint 5**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
+Format-Table doesn't change the underlying objects, it only changes how they're displayed on screen. If you tried to capture this into a variable and use it further down a pipeline, you'd get formatted display text back, not usable objects, which is why formatting cmdlets like this one are usually the last thing in a pipeline, not the middle.
 
 ## Key Terms
 See GLOSSARY.md. New here: Authentication (proving who you are to Azure before it lets you do anything), Context (which subscription/tenant your current session is currently pointed at).

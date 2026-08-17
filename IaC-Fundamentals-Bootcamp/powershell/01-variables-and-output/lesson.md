@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What a variable actually is
 A PowerShell variable is a named storage location for a value. Every variable name starts with a dollar sign: $name, $serverCount, $isOnline. You don't declare a type ahead of time like you would in a statically typed language. A variable comes into existence the moment you assign it a value, and PowerShell figures out the type on its own based on whatever you put in it.
 
@@ -14,7 +16,43 @@ $ticketCount = 12
 $isResolved = $false
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
 That's it. No int ticketCount = 12;, no upfront declaration. This is called being dynamically typed, and it's one of the first things that trips people up coming from a language that forces you to declare types.
+
+### Putting a variable inside a bigger string
+You'll need this for the problem below, so it's worth covering now instead of waiting. Double-quoted strings don't just hold variables, they can have a variable's value dropped directly inside them. This is called string interpolation:
+
+```powershell
+$firstName = "Gabe"
+"Hello, $firstName"    # outputs: Hello, Gabe
+```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
+
+PowerShell sees the $firstName inside the double-quoted string and swaps in its value automatically. This only works with double quotes. The same line with single quotes, 'Hello, $firstName', prints the literal text $firstName, dollar sign and all, because single quotes never interpolate.
+
+### Two string methods you'll need for this module's problem
+The full lesson on string manipulation is module 6, but the problem below needs two small pieces of it now, so here they are early:
+
+- .ToLower() converts a string to all lowercase: "SMITH".ToLower() gives you "smith".
+- .Substring(start, length) pulls out part of a string by position, counting from 0: "Gabe".Substring(0, 1) gives you "G", the first character.
+
+Both are called directly on a string or a variable holding one, with a dot, no separate cmdlet needed:
+
+```powershell
+$firstName = "Gabe"
+$firstInitial = $firstName.Substring(0, 1)   # "G"
+$lowered = $firstName.ToLower()               # "gabe"
+```
+
+> **Try it now, Checkpoint 3**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 ### Automatic and preference variables
 PowerShell also comes with variables it creates and manages for you. Automatic variables like $_ (the current object in a pipeline) or $PSHOME (the install path) store state PowerShell itself needs, and by convention you don't overwrite them even though technically you could. Preference variables like $ErrorActionPreference control how PowerShell behaves and you can change those on purpose. You don't need to memorize the full list right now, just know these two categories exist and that a $ doesn't always mean "a value I made up."

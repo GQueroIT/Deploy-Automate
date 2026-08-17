@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Conditional deployment with if
 Add an if expression directly on a resource or module declaration to deploy it only when a condition is true:
 
@@ -16,6 +18,10 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (deployNs
   location: resourceGroup().location
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 If deployNsg is false, this resource simply isn't deployed at all, nothing gets created and nothing errors.
 
@@ -30,6 +36,10 @@ resource nsgs 'Microsoft.Network/networkSecurityGroups@2023-09-01' = [for name i
   location: resourceGroup().location
 }]
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 This functionality has been supported since Bicep v0.3.1 onward. Each loop instance is deployed in parallel by default, in no guaranteed order, unless you control it with @batchSize().
 
@@ -47,6 +57,10 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = [for nsg in 
   location: nsg.value.location
 }]
 ```
+
+> **Try it now, Checkpoint 3**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 ### Combining if and for
 You can add a condition inside a loop to conditionally deploy only some of the collection.

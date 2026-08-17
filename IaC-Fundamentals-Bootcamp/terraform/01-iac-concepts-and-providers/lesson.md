@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What Terraform actually does
 Terraform is an infrastructure as code tool that lets you define cloud and on-prem resources in human-readable configuration files, written in a language called HCL (HashiCorp Configuration Language), ending in .tf. Those files can be versioned, reused, and shared like any other code. The core workflow is three stages: write your configuration, run a plan to preview what would change, then apply it to actually create or modify the real infrastructure.
 
@@ -15,8 +17,8 @@ A provider is a plugin that lets Terraform manage resources on a specific platfo
 
 There are two separate pieces of configuration involved:
 
-1. required_providers â€” lives inside a top-level terraform {} block. This is where you declare which provider(s) your configuration needs, including the registry source address and a version constraint.
-2. provider block â€” a separate block, outside the terraform {} block, where you actually configure that provider. For Azure, this is the azurerm provider.
+1. required_providers — lives inside a top-level terraform {} block. This is where you declare which provider(s) your configuration needs, including the registry source address and a version constraint.
+2. provider block — a separate block, outside the terraform {} block, where you actually configure that provider. For Azure, this is the azurerm provider.
 
 ```hcl
 terraform {
@@ -32,6 +34,10 @@ provider "azurerm" {
   features {}
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 If you don't pin a version constraint, terraform init can install a newer major version of a provider later on, which can silently change behavior. Pinning it protects you from that.
 

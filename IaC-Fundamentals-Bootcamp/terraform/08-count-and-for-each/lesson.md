@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### count
 Set count = N on a resource or module block to create N nearly-identical instances from one block. Each instance is addressed by a zero-based index:
 
@@ -18,6 +20,10 @@ resource "azurerm_storage_account" "example" {
   account_replication_type = "LRS"
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 Reference a specific instance with azurerm_storage_account.example[0], [1], etc.
 
@@ -34,6 +40,10 @@ resource "azurerm_storage_account" "example" {
   account_replication_type = "LRS"
 }
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 Reference a specific instance with azurerm_storage_account.example["logs"]. for_each needs a map or a set, toset() converts a plain list into a set for exactly this purpose.
 

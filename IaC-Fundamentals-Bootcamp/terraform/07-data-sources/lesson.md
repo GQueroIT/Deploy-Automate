@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What a data source is
 A data block pulls in information about something that already exists, without Terraform creating, owning, or managing it. The syntax mirrors a resource block closely, which is intentional:
 
@@ -13,6 +15,10 @@ data "azurerm_resource_group" "existing" {
   name = "rg-shared-networking"
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 Reference it with data.<type>.<label>.<attribute>, for example data.azurerm_resource_group.existing.location.
 

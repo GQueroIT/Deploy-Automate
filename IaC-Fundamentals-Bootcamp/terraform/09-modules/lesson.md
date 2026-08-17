@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### Root modules and child modules
 Every Terraform configuration is technically a module. The one you run terraform apply on directly is the root module. Anything it calls is a child module. This distinction matters once you start organizing real infrastructure.
 
@@ -18,6 +20,10 @@ modules/
     README.md
 ```
 
+> **Try it now, Checkpoint 1**
+> Type the code above yourself and try running or reasoning through it before reading on.
+
+
 ### Calling a module
 ```hcl
 module "storage" {
@@ -27,6 +33,10 @@ module "storage" {
 }
 ```
 
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
+
 The module's own variables.tf defines exactly what it accepts as input, that's its interface. The calling (root) module supplies values for those variables directly as arguments inside the module block, it does not, and cannot, reach into the child module's internal resources directly.
 
 ### A module's outputs are how data flows back out
@@ -35,6 +45,10 @@ output "storage_account_name" {
   value = module.storage.storage_account_name
 }
 ```
+
+> **Try it now, Checkpoint 3**
+> Type the code above into a scratch file (try.tf), then run `terraform fmt` and `terraform validate` against it and confirm it passes before reading on.
+
 
 Reference a child module's output from the calling file as module.<local-name>.<output-name>.
 

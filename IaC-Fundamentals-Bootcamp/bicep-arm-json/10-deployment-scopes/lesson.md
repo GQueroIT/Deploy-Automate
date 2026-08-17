@@ -5,12 +5,14 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### The four scopes
 targetScope = 'resourceGroup' | 'subscription' | 'managementGroup' | 'tenant', declared at the very top of a Bicep file. If you omit it entirely, resourceGroup is the default, which is why everything you've built so far in this repo has worked without ever setting it.
 
-- resourceGroup (default) â€” deploy resources into an existing resource group. This is what nearly all of your work so far has been.
-- subscription â€” lets you create resource groups themselves, assign subscription-level policies, and deploy resources that live above the resource group level.
-- managementGroup / tenant â€” organization-wide governance and policy assignment across multiple subscriptions. You likely won't touch these day to day, but it's worth knowing they exist and why: some things (like certain policy assignments) genuinely can't be scoped any lower.
+- resourceGroup (default) — deploy resources into an existing resource group. This is what nearly all of your work so far has been.
+- subscription — lets you create resource groups themselves, assign subscription-level policies, and deploy resources that live above the resource group level.
+- managementGroup / tenant — organization-wide governance and policy assignment across multiple subscriptions. You likely won't touch these day to day, but it's worth knowing they exist and why: some things (like certain policy assignments) genuinely can't be scoped any lower.
 
 ```bicep
 targetScope = 'subscription'
@@ -20,6 +22,10 @@ resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   location: 'eastus'
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 ### Modules can target a different scope than their parent file
 A subscription-scoped file can deploy a module into a specific resource group using the scope: property:
@@ -34,6 +40,10 @@ module exampleModule 'module.bicep' = {
   params: {}
 }
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 This is how you create a resource group and immediately deploy resources into it in a single deployment, the resource group creation happens at subscription scope, then the module call drops down to resource group scope for everything inside it.
 

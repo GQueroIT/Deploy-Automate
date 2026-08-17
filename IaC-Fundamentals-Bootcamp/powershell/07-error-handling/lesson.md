@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### The basic shape
 ```powershell
 try {
@@ -15,6 +17,10 @@ try {
     # always runs, whether it failed or not
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 finally is optional, use it for cleanup that has to happen either way, closing a connection, deleting a temp file.
 
@@ -28,6 +34,10 @@ try {
     Write-Host "Failed: $($_.Exception.Message)"
 }
 ```
+
+> **Try it now, Checkpoint 2**
+> Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
+
 
 Without -ErrorAction Stop on that Get-Item call, the catch block would silently never run, even though the command clearly failed.
 

@@ -5,6 +5,8 @@ In progress
 
 ## Lesson
 
+*This lesson is interactive. Complete each numbered checkpoint as you reach it, don't read past it and come back later, the point is building the muscle memory while the concept is still right in front of you.*
+
 ### What a module is
 A module is a separate Bicep (or ARM JSON) file that another Bicep file deploys. It's how you break a large deployment into organized, reusable pieces instead of one giant file with everything in it.
 
@@ -17,6 +19,10 @@ module storageModule 'storage.bicep' = {
   }
 }
 ```
+
+> **Try it now, Checkpoint 1**
+> Type the code above into a scratch file (try.bicep), then run `az bicep build --file try.bicep` against it and confirm it compiles with no errors before reading on.
+
 
 ### The name property isn't the resource name
 Inside a module block, name: is the name of the nested deployment operation itself, it's what shows up in your deployment history in the Azure portal. It has nothing to do with the actual names of resources created inside that module, those are controlled by whatever parameters the module itself defines and uses.
