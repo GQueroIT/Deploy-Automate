@@ -55,6 +55,10 @@ Reference a child module's output from the calling file as module.<local-name>.<
 ### Design guidance worth internalizing early
 Only expose the outputs a caller actually needs, don't leak internal implementation details just because they're technically available. And a module that's just a thin wrapper around a single resource type, with no real abstraction added, usually isn't worth the extra layer, if you can't name the module something other than the resource type it wraps, that's often a sign to just use the resource directly instead.
 
+## Commands Used in This Lesson
+
+- `terraform apply` — Executes a plan and actually creates or changes real resources. Example: `terraform apply`
+
 ## Key Terms
 See GLOSSARY.md. New here: Root module (the top-level configuration you run apply on), Child module (a reusable module called by another configuration), Interface (the specific inputs a module accepts and outputs it exposes, its contract with whatever calls it).
 

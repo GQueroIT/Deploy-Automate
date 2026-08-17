@@ -43,6 +43,13 @@ Takes the OLD address first, then the NEW address, in that order.
 ### A safety habit worth keeping
 All state-modifying subcommands write a local backup file automatically before making any change, because state is genuinely sensitive to corruption. Still, always run terraform plan again after any state mv or similar operation to confirm you actually fixed what you meant to fix, don't just assume the command worked as intended.
 
+## Commands Used in This Lesson
+
+- `terraform plan` — Previews what would change, without touching anything. Example: `terraform plan`
+- `terraform state list` — Lists every resource address currently tracked in state. Example: `terraform state list`
+- `terraform state show` — Prints the full recorded attributes for one specific resource in state. Example: `terraform state show azurerm_resource_group.example`
+- `terraform state mv` — Renames or moves a resource's tracked address in state without destroying and recreating it. Example: `terraform state mv old_address new_address`
+
 ## Key Terms
 See GLOSSARY.md. New here: Replacement (destroy and recreate, shown as -/+ in plan output), In-place update (a change applied to the existing object without destroying it, shown as ~).
 

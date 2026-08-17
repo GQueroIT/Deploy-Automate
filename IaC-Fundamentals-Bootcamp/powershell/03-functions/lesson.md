@@ -46,6 +46,11 @@ function Add-Numbers {
 ### Scope
 A variable created inside a function only exists inside that function by default, this is local scope. Once the function finishes, that variable is gone, it doesn't leak out and overwrite a variable of the same name outside the function. If you genuinely need a function to change something outside itself, you can reach into $global:variableName, but that's the exception, not the default behavior, and it makes code harder to reason about.
 
+## Commands Used in This Lesson
+
+- `Write-Output` — Sends a value into the pipeline so it can be captured, piped, or returned. Example: `Write-Output $value`
+- `Get-PSDrive` — Returns info about drives on the system, including used and free space. Example: `Get-PSDrive -Name C`
+
 ## Key Terms
 See GLOSSARY.md. New here: Function, Scope (a variable's scope is where in the script it's visible and usable), Return value.
 

@@ -965,8 +965,15 @@ def scaffold(base: Path):
         "# IaC Fundamentals Bootcamp",
         "",
         "Hands-on bootcamp covering PowerShell, Bicep/ARM/JSON, and Terraform in one repo.",
-        "Each module has a lesson.md, a problem.md, and a solution file. Work modules in any order.",
-        "See GLOSSARY.md for terminology.",
+        "",
+        "## Getting Started",
+        "1. Work through ENVIRONMENT-SETUP.md once, for whichever machine you're on.",
+        "2. Pick any section, PowerShell, Bicep/ARM/JSON, or Terraform, order doesn't matter.",
+        "3. Inside a module, read lesson.md top to bottom and actually do each **Try it now** checkpoint before moving to the next section, that's the hands-on part.",
+        "4. Check **Commands Used in This Lesson** at the bottom of the lesson for a quick reference on anything you typed but don't fully remember.",
+        "5. Once the lesson's done, open problem.md and read the scenario.",
+        "6. Write your actual answer in the solution file, that's the real deliverable for the module, not the checkpoints.",
+        "7. Stuck on a term? GLOSSARY.md at the repo root has plain definitions for every concept used across all three sections.",
         "",
     ]
     for folder, title, modules in SCAFFOLD_SECTIONS:
@@ -1180,10 +1187,97 @@ def make_interactive(lesson_text: str) -> str:
 
     return result
 
+# --- Command reference (per-lesson, auto-detected from each lesson's own text) ---
+# One master dictionary covering every command, cmdlet, CLI verb, function, and
+# method used anywhere across all 35 lessons. At write time, each lesson scans
+# itself for which of these actually appear in its own text and lists only
+# those, so the section is always accurate to that specific lesson, no manual
+# per-module tagging required.
+
+COMMAND_REFERENCE = {
+    # PowerShell cmdlets
+    "Write-Host": ("Prints text to the console for a human to read. Not sent down the pipeline.", 'Write-Host "text"'),
+    "Write-Output": ("Sends a value into the pipeline so it can be captured, piped, or returned.", "Write-Output $value"),
+    "Get-PSDrive": ("Returns info about drives on the system, including used and free space.", "Get-PSDrive -Name C"),
+    "Get-Process": ("Returns the list of currently running processes as objects.", "Get-Process"),
+    "Where-Object": ("Filters objects in the pipeline based on a condition.", '... | Where-Object { $_.Property -eq "value" }'),
+    "Sort-Object": ("Sorts objects in the pipeline by a property.", "... | Sort-Object -Property Name -Descending"),
+    "Select-Object": ("Picks specific properties to keep, or limits how many objects pass through.", "... | Select-Object -Property Name -First 5"),
+    "Get-Member": ("Lists every property and method attached to an object.", "... | Get-Member"),
+    "Get-Item": ("Gets an item at a given path, like a file. Used with -ErrorAction Stop to make it catchable.", "Get-Item -Path $path -ErrorAction Stop"),
+    "Get-Content": ("Reads a file's contents, returning an array of lines, or one string with -Raw.", "Get-Content -Path file.txt -Raw"),
+    "Set-Content": ("Overwrites a file with new content.", "Set-Content -Path file.txt -Value $text"),
+    "Add-Content": ("Appends content to the end of a file.", "Add-Content -Path file.txt -Value $text"),
+    "Export-Csv": ("Writes PowerShell objects out to a CSV file, one row per object.", "$data | Export-Csv -Path file.csv -NoTypeInformation"),
+    "Import-Csv": ("Reads a CSV file back in as PowerShell objects.", "Import-Csv -Path file.csv"),
+    "ConvertTo-Json": ("Converts a PowerShell object into a JSON string.", "$data | ConvertTo-Json -Depth 10"),
+    "ConvertFrom-Json": ("Parses a JSON string into a PowerShell object.", "$json | ConvertFrom-Json"),
+    "Get-Help": ("Displays help and documentation for a cmdlet, function, or script.", "Get-Help .\\script.ps1 -Full"),
+    "Install-Module": ("Installs a PowerShell module from a repository like the PowerShell Gallery.", "Install-Module -Name Az -Repository PSGallery -Force"),
+    "Update-Module": ("Updates an already-installed module to the latest version.", "Update-Module -Name Az -Force"),
+    "Connect-AzAccount": ("Signs in to Azure interactively from PowerShell.", "Connect-AzAccount"),
+    "Get-AzContext": ("Shows which Azure subscription and tenant the current session is pointed at.", "Get-AzContext"),
+    "Set-AzContext": ("Switches the current session to a specific subscription.", 'Set-AzContext -Subscription "name-or-id"'),
+    "Get-AzResourceGroup": ("Lists resource groups in the current subscription.", "Get-AzResourceGroup"),
+    "Format-Table": ("Displays objects as a table, showing only the properties you choose.", "... | Format-Table -Property Name, Location"),
+    ".ToLower()": ("String method, converts a string to all lowercase.", '"TEXT".ToLower()'),
+    ".ToUpper()": ("String method, converts a string to all uppercase.", '"text".ToUpper()'),
+    ".Substring()": ("String method, pulls out part of a string by position.", '"Gabe".Substring(0, 1)'),
+    ".Split()": ("String method, breaks a string into an array on a delimiter.", '$line.Split(" ")'),
+    ".Trim()": ("String method, removes leading and trailing whitespace.", "$text.Trim()"),
+    ".Replace()": ("String method, swaps one piece of text for another.", '$text.Replace("old", "new")'),
+    ".Contains()": ("String method, returns true or false for whether a string contains another string.", '$text.Contains("word")'),
+    ".GetType()": ("Returns the underlying type of a value.", "$value.GetType()"),
+    # Azure CLI / Bicep
+    "az bicep build": ("Compiles a .bicep file into the ARM JSON that actually gets deployed.", "az bicep build --file main.bicep"),
+    "az bicep decompile": ("Converts an existing ARM JSON template into Bicep, best-effort.", "az bicep decompile main.json"),
+    "az bicep install": ("Installs the Bicep CLI if Azure CLI hasn't already installed it.", "az bicep install"),
+    "az bicep version": ("Shows the currently installed Bicep CLI version.", "az bicep version"),
+    "az deployment group create": ("Deploys a Bicep or ARM template into a specific resource group.", "az deployment group create --resource-group rg-name --template-file main.bicep"),
+    "az deployment group validate": ("Checks a template will deploy successfully without creating anything.", "az deployment group validate --resource-group rg-name --template-file main.bicep"),
+    "az deployment group what-if": ("Shows exactly what a deployment would change, without applying anything.", "az deployment group what-if --resource-group rg-name --template-file main.bicep"),
+    "az deployment sub create": ("Deploys a subscription-scoped Bicep or ARM template.", "az deployment sub create --location eastus --template-file main.bicep"),
+    "az deployment sub what-if": ("Previews a subscription-scoped deployment before applying it.", "az deployment sub what-if --location eastus --template-file main.bicep"),
+    "az login": ("Signs in to Azure from the CLI.", "az login"),
+    "az account show": ("Shows which Azure account and subscription the CLI is currently authenticated as.", "az account show"),
+    "resourceGroup()": ("Bicep function, returns info about the current resource group, .location and .name.", "resourceGroup().location"),
+    "subscription()": ("Bicep function, returns info about the current subscription.", "subscription().subscriptionId"),
+    "uniqueString()": ("Bicep function, generates a deterministic hash string from its inputs, same inputs always produce the same output.", "uniqueString(resourceGroup().id)"),
+    "resourceId()": ("ARM template function, builds the full resource ID for a resource from its type and name.", "resourceId('Microsoft.Storage/storageAccounts', parameters('name'))"),
+    "range()": ("Bicep function, generates an array of sequential integers for index-based loops.", "range(0, 3)"),
+    "items()": ("Bicep function, loops over the key-value pairs of an object instead of a plain array.", "items(myObject)"),
+    # Terraform
+    "terraform init": ("Prepares the working directory and downloads required providers.", "terraform init"),
+    "terraform plan": ("Previews what would change, without touching anything.", "terraform plan"),
+    "terraform apply": ("Executes a plan and actually creates or changes real resources.", "terraform apply"),
+    "terraform destroy": ("Tears down everything the current configuration manages.", "terraform destroy"),
+    "terraform fmt": ("Reformats configuration files to a consistent style.", "terraform fmt"),
+    "terraform validate": ("Checks syntax and internal consistency without touching real infrastructure.", "terraform validate"),
+    "terraform state list": ("Lists every resource address currently tracked in state.", "terraform state list"),
+    "terraform state show": ("Prints the full recorded attributes for one specific resource in state.", "terraform state show azurerm_resource_group.example"),
+    "terraform state mv": ("Renames or moves a resource's tracked address in state without destroying and recreating it.", "terraform state mv old_address new_address"),
+    "terraform login": ("Authenticates the Terraform CLI itself against HCP Terraform, separate from cloud provider auth.", "terraform login"),
+    "toset()": ("Converts a list into a set, required for for_each on a plain list of strings.", 'toset(["a", "b", "c"])'),
+}
+
+def commands_used_section(lesson_text: str) -> str:
+    found = [name for name in COMMAND_REFERENCE if name in lesson_text]
+    if not found:
+        return ""
+    lines = ["## Commands Used in This Lesson", ""]
+    for name in found:
+        desc, syntax = COMMAND_REFERENCE[name]
+        lines.append(f"- `{name}` — {desc} Example: `{syntax}`")
+    lines.append("")
+    return "\n".join(lines) + "\n"
+
 def write_module(section_path: Path, slug: str, content: dict):
     module_path = section_path / slug
     module_path.mkdir(parents=True, exist_ok=True)
-    (module_path / "lesson.md").write_text(make_interactive(content["lesson"]))
+    lesson_with_commands = content["lesson"].replace(
+        "## Key Terms", commands_used_section(content["lesson"]) + "## Key Terms", 1
+    )
+    (module_path / "lesson.md").write_text(make_interactive(lesson_with_commands))
     (module_path / "problem.md").write_text(content["problem"])
 
 def build():

@@ -67,6 +67,12 @@ Microsoft's own PSScriptAnalyzer linter actually flags Write-Host inside functio
 
 Rule of thumb: if the message is for the person sitting at the keyboard right now, Write-Host is fine. If the value needs to go anywhere else, a variable, another cmdlet, a return value, use Write-Output or implicit output instead.
 
+## Commands Used in This Lesson
+
+- `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
+- `Write-Output` — Sends a value into the pipeline so it can be captured, piped, or returned. Example: `Write-Output $value`
+- `.ToLower()` — String method, converts a string to all lowercase. Example: `"TEXT".ToLower()`
+
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: Variable, Cmdlet, Pipeline, Object, Parameter.
 

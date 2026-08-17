@@ -57,6 +57,10 @@ terraform plan -var-file="dev.tfvars"
 
 This is the standard way to keep per-environment values (dev.tfvars, prod.tfvars) out of your core .tf files entirely.
 
+## Commands Used in This Lesson
+
+- `terraform plan` — Previews what would change, without touching anything. Example: `terraform plan`
+
 ## Key Terms
 See GLOSSARY.md. New here: Input value (a variable's role, accepting data into a configuration), Output value (a value exposed after apply), Validation rule (a condition a variable's value must satisfy before Terraform will proceed).
 

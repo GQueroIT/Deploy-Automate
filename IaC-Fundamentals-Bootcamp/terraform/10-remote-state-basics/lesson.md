@@ -36,6 +36,10 @@ HCP Terraform's free offering changed during 2026: the older flat "500 managed r
 ### terraform_remote_state
 A data source that lets one completely separate Terraform configuration read the outputs of another configuration's state. This is how teams split infrastructure into layers, networking managed by one configuration, compute managed by a separate one, that reads the networking layer's outputs (like a VNet ID) without owning or touching the networking resources itself.
 
+## Commands Used in This Lesson
+
+- `terraform login` — Authenticates the Terraform CLI itself against HCP Terraform, separate from cloud provider auth. Example: `terraform login`
+
 ## Key Terms
 See GLOSSARY.md. New here: Backend (where and how Terraform stores its state file), Remote state (state stored somewhere other than your local disk, typically for team collaboration and security).
 

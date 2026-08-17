@@ -36,6 +36,10 @@ Everything from module 6, if expressions and for loops, works exactly the same w
 ### Sharing modules
 For sharing modules across a team or multiple projects, you can publish them to a private Bicep module registry or use template specs. Bicep also has limited support for embedding non-Bicep artifacts like PowerShell scripts using loadTextContent() and loadFileAsBase64().
 
+## Commands Used in This Lesson
+
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+
 ## Key Terms
 See GLOSSARY.md. New here: Nested deployment (a deployment operation triggered from within another deployment, which is what a module call actually is under the hood).
 

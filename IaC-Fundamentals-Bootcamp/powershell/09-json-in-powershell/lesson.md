@@ -51,6 +51,12 @@ $config | ConvertTo-Json -Depth 10
 ### Why this matters beyond just PowerShell
 This is the exact same JSON format you hand-wrote in the bicep-arm-json section of this repo for ARM templates. Same format, different producer and consumer, a config file, an API response, an ARM template, it's all just JSON, and now you can move data between PowerShell and any of it.
 
+## Commands Used in This Lesson
+
+- `Get-Content` — Reads a file's contents, returning an array of lines, or one string with -Raw. Example: `Get-Content -Path file.txt -Raw`
+- `ConvertTo-Json` — Converts a PowerShell object into a JSON string. Example: `$data | ConvertTo-Json -Depth 10`
+- `ConvertFrom-Json` — Parses a JSON string into a PowerShell object. Example: `$json | ConvertFrom-Json`
+
 ## Key Terms
 See GLOSSARY.md. New here: Serialization (converting a value into a storable/transmittable format like JSON), Deserialization (the reverse, turning that format back into a usable value).
 

@@ -27,6 +27,10 @@ Visual Studio Code has a feature that lets you paste raw ARM JSON directly into 
 ### Closing the loop on this whole section
 Think about what you've actually done across this section of the repo: hand-wrote ARM JSON from scratch (module 1), wrote the equivalent in Bicep and compiled it back to JSON to compare (module 2), and now you're decompiling JSON back into Bicep. You've gone in both directions across the exact same conversion, which is the fastest way to actually understand that Bicep isn't a separate system, it's a syntax layer over the same ARM engine.
 
+## Commands Used in This Lesson
+
+- `az bicep decompile` — Converts an existing ARM JSON template into Bicep, best-effort. Example: `az bicep decompile main.json`
+
 ## Key Terms
 See GLOSSARY.md. New here: Best-effort conversion (a tool does its best to translate automatically, but the output isn't guaranteed correct or complete without review).
 

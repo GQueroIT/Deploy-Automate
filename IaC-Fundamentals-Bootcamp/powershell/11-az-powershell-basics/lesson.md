@@ -69,6 +69,16 @@ Get-AzResourceGroup | Format-Table -Property ResourceGroupName, Location
 
 Format-Table doesn't change the underlying objects, it only changes how they're displayed on screen. If you tried to capture this into a variable and use it further down a pipeline, you'd get formatted display text back, not usable objects, which is why formatting cmdlets like this one are usually the last thing in a pipeline, not the middle.
 
+## Commands Used in This Lesson
+
+- `Install-Module` — Installs a PowerShell module from a repository like the PowerShell Gallery. Example: `Install-Module -Name Az -Repository PSGallery -Force`
+- `Update-Module` — Updates an already-installed module to the latest version. Example: `Update-Module -Name Az -Force`
+- `Connect-AzAccount` — Signs in to Azure interactively from PowerShell. Example: `Connect-AzAccount`
+- `Get-AzContext` — Shows which Azure subscription and tenant the current session is pointed at. Example: `Get-AzContext`
+- `Set-AzContext` — Switches the current session to a specific subscription. Example: `Set-AzContext -Subscription "name-or-id"`
+- `Get-AzResourceGroup` — Lists resource groups in the current subscription. Example: `Get-AzResourceGroup`
+- `Format-Table` — Displays objects as a table, showing only the properties you choose. Example: `... | Format-Table -Property Name, Location`
+
 ## Key Terms
 See GLOSSARY.md. New here: Authentication (proving who you are to Azure before it lets you do anything), Context (which subscription/tenant your current session is currently pointed at).
 

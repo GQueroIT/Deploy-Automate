@@ -55,6 +55,12 @@ Status: $status
 > Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
 
 
+## Commands Used in This Lesson
+
+- `.ToLower()` — String method, converts a string to all lowercase. Example: `"TEXT".ToLower()`
+- `.ToUpper()` — String method, converts a string to all uppercase. Example: `"text".ToUpper()`
+- `.Trim()` — String method, removes leading and trailing whitespace. Example: `$text.Trim()`
+
 ## Key Terms
 See GLOSSARY.md. New here: Method (a built-in action attached to a value, called with a dot, like .ToUpper()), Format operator (-f, builds a string from a template and values), Here-string (a multi-line string block, opened with @" and closed with "@).
 

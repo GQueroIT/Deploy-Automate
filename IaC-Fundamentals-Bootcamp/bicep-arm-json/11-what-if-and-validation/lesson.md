@@ -39,6 +39,11 @@ Reading what-if output: + means create, - means delete, ~ means modify in place.
 ### ValidationLevel
 Recent versions of Azure CLI (2.76.0+) and Azure PowerShell (13.4.0+) introduced a ValidationLevel switch on deployment commands, giving you control over how thoroughly Resource Manager checks the template during validation, worth knowing exists if you hit validation behavior that seems more or less strict than expected.
 
+## Commands Used in This Lesson
+
+- `az deployment group validate` — Checks a template will deploy successfully without creating anything. Example: `az deployment group validate --resource-group rg-name --template-file main.bicep`
+- `az deployment group what-if` — Shows exactly what a deployment would change, without applying anything. Example: `az deployment group what-if --resource-group rg-name --template-file main.bicep`
+
 ## Key Terms
 See GLOSSARY.md. New here: Dry run (a preview that shows what would happen without actually doing it, what-if is Bicep/ARM's version of this concept).
 

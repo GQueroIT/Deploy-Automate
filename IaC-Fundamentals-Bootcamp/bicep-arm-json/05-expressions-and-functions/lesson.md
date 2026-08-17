@@ -37,6 +37,12 @@ Using resourceGroup().id as the input means the generated name stays the same ev
 ### Why hardcoded names break
 A hardcoded storage account name like 'mystorageaccount' will fail to deploy the moment anyone else in the world has already taken that name, storage account names are globally unique across all of Azure, not scoped to your subscription. This is exactly the kind of failure uniqueString() is designed to prevent.
 
+## Commands Used in This Lesson
+
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+- `subscription()` — Bicep function, returns info about the current subscription. Example: `subscription().subscriptionId`
+- `uniqueString()` — Bicep function, generates a deterministic hash string from its inputs, same inputs always produce the same output. Example: `uniqueString(resourceGroup().id)`
+
 ## Key Terms
 See GLOSSARY.md. New here: Expression (a computed value evaluated at deployment time, built from functions, variables, and operators), Deterministic function (same input always produces the same output, as opposed to something random).
 

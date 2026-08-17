@@ -72,6 +72,14 @@ Get-Process |
 > Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
 
 
+## Commands Used in This Lesson
+
+- `Get-Process` — Returns the list of currently running processes as objects. Example: `Get-Process`
+- `Where-Object` — Filters objects in the pipeline based on a condition. Example: `... | Where-Object { $_.Property -eq "value" }`
+- `Sort-Object` — Sorts objects in the pipeline by a property. Example: `... | Sort-Object -Property Name -Descending`
+- `Select-Object` — Picks specific properties to keep, or limits how many objects pass through. Example: `... | Select-Object -Property Name -First 5`
+- `Get-Member` — Lists every property and method attached to an object. Example: `... | Get-Member`
+
 ## Key Terms
 See GLOSSARY.md. New here: Filter (narrowing a set of objects down by a condition), Script block (the { } code passed to Where-Object, treated as a chunk of code rather than run immediately), Property (a named piece of data attached to an object, like .WorkingSet on a process).
 

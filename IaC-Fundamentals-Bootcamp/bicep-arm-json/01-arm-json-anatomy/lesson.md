@@ -56,6 +56,10 @@ You'll need this for the problem below. The full lesson on ARM template function
 
 Anything inside square brackets in ARM JSON is a function call being evaluated, not a literal string. resourceId() is the most common one you'll reach for in an output, it doesn't require the resource to have already deployed, ARM can compute a resource ID from its type and name alone.
 
+## Commands Used in This Lesson
+
+- `resourceId()` — ARM template function, builds the full resource ID for a resource from its type and name. Example: `resourceId('Microsoft.Storage/storageAccounts', parameters('name'))`
+
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: JSON, ARM template, Resource provider, API version, Schema, Declarative.
 

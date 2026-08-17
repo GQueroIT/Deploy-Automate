@@ -48,6 +48,11 @@ az bicep build --file solution.bicep
 
 This produces a .json file. Comparing that output against the ARM JSON you hand-wrote in module 1 is exactly how you confirm Bicep isn't magic, it's just generating the same thing you already know how to read.
 
+## Commands Used in This Lesson
+
+- `az bicep build` — Compiles a .bicep file into the ARM JSON that actually gets deployed. Example: `az bicep build --file main.bicep`
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+
 ## Key Terms
 See GLOSSARY.md. New here: Symbolic name (an internal reference name for a resource inside a Bicep file, not its actual Azure name), Transpile/Compile (converting Bicep source into the ARM JSON that actually gets deployed).
 

@@ -42,6 +42,11 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for i
 ### Every instance needs a unique name
 This is the single most common mistake with loops: forgetting that name: has to be different for every instance, usually built from the loop item or index. If every instance in a loop ends up with the same computed name, Bicep will fail or silently only create one.
 
+## Commands Used in This Lesson
+
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+- `range()` — Bicep function, generates an array of sequential integers for index-based loops. Example: `range(0, 3)`
+
 ## Key Terms
 See GLOSSARY.md. Nothing new this module, this is reinforcement of Loop and Iteration from module 6, specifically applied to the resource-scaling use case.
 

@@ -61,6 +61,10 @@ param(
 > Type the code above into a scratch file (try.ps1) or directly into your terminal, and run it before reading on. Confirm you actually see what the lesson just described, don't just take it on faith.
 
 
+## Commands Used in This Lesson
+
+- `Get-Help` — Displays help and documentation for a cmdlet, function, or script. Example: `Get-Help .\script.ps1 -Full`
+
 ## Key Terms
 See GLOSSARY.md. New here: CmdletBinding (an attribute that upgrades a function/script to behave like a real cmdlet), Comment-based help (a structured comment block that PowerShell's help system can read).
 

@@ -19,6 +19,11 @@ Almost every resource type in this provider is prefixed azurerm_, for example az
 ### The features {} block, again
 Covered briefly in module 1: recent versions of the azurerm provider require an explicit features {} block inside provider "azurerm", even completely empty, or terraform init errors out. Some resource types also have provider-specific quirks and required arguments that are genuinely worth checking the Registry's docs page for before writing them from memory, rather than guessing based on what similar resources in Azure usually need.
 
+## Commands Used in This Lesson
+
+- `az login` — Signs in to Azure from the CLI. Example: `az login`
+- `terraform init` — Prepares the working directory and downloads required providers. Example: `terraform init`
+
 ## Key Terms
 See GLOSSARY.md. New here: Authentication method (how you prove your identity to a platform before it lets you manage resources on it).
 

@@ -39,6 +39,17 @@ Everything that comes back from Import-Csv is a string, even things that look li
 
 If you're ever unsure what type a value actually is, .GetType() tells you directly: $row.StartDate.GetType() prints the underlying type, useful for confirming a suspicion instead of guessing at why a comparison isn't working.
 
+## Commands Used in This Lesson
+
+- `Where-Object` — Filters objects in the pipeline based on a condition. Example: `... | Where-Object { $_.Property -eq "value" }`
+- `Get-Content` — Reads a file's contents, returning an array of lines, or one string with -Raw. Example: `Get-Content -Path file.txt -Raw`
+- `Set-Content` — Overwrites a file with new content. Example: `Set-Content -Path file.txt -Value $text`
+- `Add-Content` — Appends content to the end of a file. Example: `Add-Content -Path file.txt -Value $text`
+- `Export-Csv` — Writes PowerShell objects out to a CSV file, one row per object. Example: `$data | Export-Csv -Path file.csv -NoTypeInformation`
+- `Import-Csv` — Reads a CSV file back in as PowerShell objects. Example: `Import-Csv -Path file.csv`
+- `ConvertFrom-Json` — Parses a JSON string into a PowerShell object. Example: `$json | ConvertFrom-Json`
+- `.GetType()` — Returns the underlying type of a value. Example: `$value.GetType()`
+
 ## Key Terms
 See GLOSSARY.md. New here: CSV (comma-separated values, a plain-text table format where each line is a row and commas separate the columns).
 

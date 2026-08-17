@@ -52,6 +52,10 @@ With count, removing an item from the middle of a list shifts every subsequent i
 
 HashiCorp's own guidance: use count for genuinely identical instances where index doesn't matter, use for_each when instances need distinct values or a stable identity that survives list changes. You cannot use both on the same block.
 
+## Commands Used in This Lesson
+
+- `toset()` — Converts a list into a set, required for for_each on a plain list of strings. Example: `toset(["a", "b", "c"])`
+
 ## Key Terms
 See GLOSSARY.md. New here: Meta-argument (a built-in argument, like count, for_each, or depends_on, that works on any resource type and controls Terraform's own behavior rather than the resource's actual configuration), Index vs key (a number based on position, versus a stable name-based identifier).
 

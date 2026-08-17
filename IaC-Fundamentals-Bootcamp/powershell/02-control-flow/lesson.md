@@ -68,6 +68,10 @@ switch can also match wildcards (-Wildcard) or regular expressions (-Regex), and
 
 break exits a loop immediately. continue skips to the next iteration.
 
+## Commands Used in This Lesson
+
+- `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
+
 ## Key Terms
 See GLOSSARY.md. New here: Boolean, Operator, Loop, Iteration. A Boolean is a value that's only ever true or false, like $isResolved from module 1. An Operator is a symbol or keyword (like -eq) that compares or combines values. A Loop repeats a block of code. Each single pass through a loop is one Iteration.
 

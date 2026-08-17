@@ -46,6 +46,10 @@ One quirk worth knowing up front: recent versions of the azurerm provider requir
 ### Resource blocks, at a glance
 You'll go deep on these in a later module, but the shape is: resource "<provider_type>" "<local_name>" { arguments }. The local name is just how you refer to that resource elsewhere in your own configuration, it isn't the actual name Azure gives the resource.
 
+## Commands Used in This Lesson
+
+- `terraform init` — Prepares the working directory and downloads required providers. Example: `terraform init`
+
 ## Key Terms
 See GLOSSARY.md at the repo root. This module leans on: HCL, Provider, Resource block, Declarative, Idempotent.
 

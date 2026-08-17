@@ -49,6 +49,10 @@ resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
 ### Prefer implicit, and here's why
 Microsoft's own best-practices guidance is explicit: prefer implicit dependencies over explicit ones wherever it's usually possible to reference the other resource's properties instead. The reasoning: dependsOn doesn't document why resources are related (after deployment, there's no way to inspect it), and unnecessary explicit dependencies slow deployment down because Resource Manager can no longer deploy unrelated resources in parallel. If you catch yourself reaching for dependsOn, it's worth asking whether there's a property reference that would create the same dependency implicitly instead.
 
+## Commands Used in This Lesson
+
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+
 ## Key Terms
 See GLOSSARY.md. New here: Dependency graph (the full map of which resources must deploy before which others, built automatically from implicit and explicit dependencies together).
 

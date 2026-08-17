@@ -47,6 +47,11 @@ Inside a catch block, $_ refers to the error record itself. $_.Exception.Message
 ### throw
 You can raise your own error deliberately with throw "some message", useful inside a function when a condition means it genuinely can't continue.
 
+## Commands Used in This Lesson
+
+- `Write-Host` — Prints text to the console for a human to read. Not sent down the pipeline. Example: `Write-Host "text"`
+- `Get-Item` — Gets an item at a given path, like a file. Used with -ErrorAction Stop to make it catchable. Example: `Get-Item -Path $path -ErrorAction Stop`
+
 ## Key Terms
 See GLOSSARY.md. New here: Exception (the object PowerShell creates describing what went wrong), Terminating error (stops execution immediately, catchable), Non-terminating error (reported but execution continues, not caught by try/catch unless forced with -ErrorAction Stop).
 

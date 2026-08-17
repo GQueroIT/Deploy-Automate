@@ -68,6 +68,11 @@ You can add a condition inside a loop to conditionally deploy only some of the c
 ### Controlling loop order with @batchSize
 By default, looped resources deploy concurrently in a non-deterministic order. @batchSize(n) forces them to deploy in sequential batches of n at a time, useful when you're updating a production environment and don't want every instance changing simultaneously.
 
+## Commands Used in This Lesson
+
+- `resourceGroup()` — Bicep function, returns info about the current resource group, .location and .name. Example: `resourceGroup().location`
+- `items()` — Bicep function, loops over the key-value pairs of an object instead of a plain array. Example: `items(myObject)`
+
 ## Key Terms
 See GLOSSARY.md. New here: Conditional deployment (a resource that only gets created if a condition is true), Iteration/Loop (deploying multiple similar resources from one block), Batch (a controlled group of loop instances deployed together).
 
