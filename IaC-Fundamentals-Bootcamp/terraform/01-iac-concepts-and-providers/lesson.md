@@ -19,8 +19,8 @@ A provider is a plugin that lets Terraform manage resources on a specific platfo
 
 There are two separate pieces of configuration involved:
 
-1. required_providers — lives inside a top-level terraform {} block. This is where you declare which provider(s) your configuration needs, including the registry source address and a version constraint.
-2. provider block — a separate block, outside the terraform {} block, where you actually configure that provider. For Azure, this is the azurerm provider.
+1. required_providers ï¿½ lives inside a top-level terraform {} block. This is where you declare which provider(s) your configuration needs, including the registry source address and a version constraint.
+2. provider block ï¿½ a separate block, outside the terraform {} block, where you actually configure that provider. For Azure, this is the azurerm provider.
 
 ```hcl
 terraform {
@@ -50,7 +50,7 @@ You'll go deep on these in a later module, but the shape is: resource "<provider
 
 ## Commands Used in This Lesson
 
-- `terraform init` — Prepares the working directory and downloads required providers. Example: `terraform init`
+- `terraform init` ï¿½ Prepares the working directory and downloads required providers. Example: `terraform init`
 
 ## Troubleshooting
 
